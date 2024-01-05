@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    * {
+      @apply box-border list-none p-0 m-0 scroll-smooth;
+    }
+  
+    body {
+      @apply bg-dark-1 text-white min-h-screen;
+    }
+  }
+
+@layer utilities {
+  /* UTILITIES */
+  .invert-white {
+    @apply invert brightness-0 transition;
+  }
+
+  .flex-center {
+    @apply flex justify-center items-center;
+  }
+
+  .flex-between {
+    @apply flex justify-between items-center;
+  }
+
+  .flex-start {
+    @apply flex justify-start items-center;
+  }
+
+  /* Topbar */
+  .topbar {
+    @apply sticky top-0 z-50 h-20 bg-dark-2 w-full;
+  }
+
+  /* Left sidebar */
+  .leftsidebar {
+    @apply hidden md:flex px-6 py-10 flex-col justify-between min-w-[270px] bg-dark-2;
+  }
+
+  .leftsidebar-link {
+    @apply rounded-lg hover:bg-primary-500 transition;
+  }
+}
