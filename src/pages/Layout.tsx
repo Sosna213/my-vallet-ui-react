@@ -4,7 +4,7 @@ import {Topbar, LeftSidebar} from "../components/shared"
 const Layout = () => {
 
     return (
-        <div className="w-full flex flex-1 flex-wrap">
+        <div className="w-full flex flex-wrap">
             <Topbar />
             <LeftSidebar />
 
