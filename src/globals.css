@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 @layer base {
     * {
       @apply box-border list-none p-0 m-0 scroll-smooth;
@@ -32,7 +33,7 @@
 
   /* Topbar */
   .topbar {
-    @apply sticky top-0 z-50 h-20 bg-dark-2 w-full;
+    @apply sticky top-0 z-50 bg-dark-2 w-full;
   }
 
   /* Left sidebar */

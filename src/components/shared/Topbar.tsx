@@ -33,10 +33,10 @@ const Topbar = () => {
         screen_hint: "signup",
       },
     });
-  };
+  };  
 
   const buttons = isAuthenticated ? (
-    <Button variant={"destructive"} onClick={handleLogout}>Logout</Button>
+    <Button variant={"ghost"} onClick={handleLogout}>Logout</Button>
   ) : (
     <div className="flex gap-4">
       <Button onClick={handleLogin}>Login</Button>
