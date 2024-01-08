@@ -22,6 +22,9 @@ return [
   {
     accessorKey: "name",
     header: "Name",
+  },  {
+    accessorKey: "balance",
+    header: "Balance",
   },
   {
     accessorKey: "currency",

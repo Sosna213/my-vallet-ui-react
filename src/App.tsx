@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { checkIsRegistered, registerUser } from "./services/api-calls/users";
 import { ThemeProvider } from "./components/theme-provider";
 import { AuthenticationGuard } from "./components/authentication-guard";
+import { Toaster } from "./components/ui/toaster";
 
 const queryClient = new QueryClient();
 
@@ -51,9 +52,13 @@ const App = () => {
           <Routes>
             <Route element={<Layout />}>
               <Route index element={<Home />} />
-              <Route path="/accounts" element={<AuthenticationGuard component={Accounts} />} />
+              <Route
+                path="/accounts"
+                element={<AuthenticationGuard component={Accounts} />}
+              />
             </Route>
           </Routes>
+          <Toaster />
         </QueryClientProvider>
       </main>
     </ThemeProvider>

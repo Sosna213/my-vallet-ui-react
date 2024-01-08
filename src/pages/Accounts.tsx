@@ -1,6 +1,8 @@
 import AccountsTable from "@/components/account/AccountsTable";
 import CreateAccountDialog from "@/components/account/CreateAccountDialog";
 import EmptyState from "@/components/shared/EmptyState";
+import Error from "@/components/shared/Error";
+import Loading from "@/components/shared/Loading";
 import {
   Card,
   CardContent,
@@ -9,7 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
-import { Skeleton } from "@/components/ui/skeleton";
+import { useToast } from "@/components/ui/use-toast";
 import {
   fetchAccounts,
   createAccount,
@@ -20,6 +22,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CreateAccount } from "my-wallet-shared-types/shared-types";
 
 function Accounts() {
+  const { toast } = useToast();
   const { getAccessTokenSilently } = useAuth0();
   const queryClient = useQueryClient();
 
@@ -27,6 +30,7 @@ function Accounts() {
     data: accounts,
     error,
     isLoading,
+    refetch,
   } = useQuery({
     queryKey: ["accounts"],
     queryFn: async () => {
@@ -66,6 +70,10 @@ function Accounts() {
         onClick={async () => {
           try {
             await deleteAcc(accountId);
+            toast({
+              title: "Success",
+              description: "Account deleted successfuly.",
+            });
           } catch (e) {
             console.error(e);
           }
@@ -77,10 +85,10 @@ function Accounts() {
   };
 
   if (isLoading) {
-    return <Skeleton className="w-[100px] h-[20px] rounded-full" />;
+    return <Loading />;
   }
   if (error) {
-    return <p>Error</p>;
+    return <Error refetch={refetch} />;
   }
   if (accounts && accounts.length === 0) {
     return (
