@@ -23,6 +23,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { currencies } from "@/constants/currencies";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { useToast } from "../ui/use-toast";
 
 const formSchema = zod.object({
   name: zod
@@ -40,6 +41,7 @@ const formSchema = zod.object({
 function CreateAccountDialog(props: {
   addAccount: (crateAccountData: CreateAccount) => Promise<unknown>;
 }) {
+  const { toast } = useToast();
   const form = useForm<zod.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -53,6 +55,10 @@ function CreateAccountDialog(props: {
 
     try {
       await props.addAccount(values);
+      toast({
+        title: "Success",
+        description: "Account created successfuly."
+      });
       form.reset();
     } catch (e) {
       console.error(e);
