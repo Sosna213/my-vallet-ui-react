@@ -1,7 +1,6 @@
 import AccountsTable from "@/components/account/AccountsTable";
 import CreateAccountDialog from "@/components/account/CreateAccountDialog";
 import EmptyState from "@/components/shared/EmptyState";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -9,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   fetchAccounts,
@@ -62,7 +62,7 @@ function Accounts() {
 
   const deleteButton = (accountId: number) => {
     return (
-      <Button
+      <DropdownMenuItem
         onClick={async () => {
           try {
             await deleteAcc(accountId);
@@ -72,7 +72,7 @@ function Accounts() {
         }}
       >
         Delete
-      </Button>
+      </DropdownMenuItem>
     );
   };
 

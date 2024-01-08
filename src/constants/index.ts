@@ -1,12 +1,16 @@
-export const sidebarLinks = [
+import { INavLink } from "@/types";
+
+export const sidebarLinks: INavLink[] = [
   {
     imgURL: "/assets/icons/home.svg",
     route: "/",
     label: "Home",
+    needsAuthentication: false,
   },
   {
     imgURL: "/assets/icons/accounts.svg",
     route: "/accounts",
     label: "Accounts",
+    needsAuthentication: true,
   },
 ];

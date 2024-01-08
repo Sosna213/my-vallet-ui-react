@@ -2,7 +2,6 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -22,6 +21,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { currencies } from "@/constants/currencies";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
 const formSchema = zod.object({
   name: zod
@@ -31,7 +32,9 @@ const formSchema = zod.object({
     })
     .max(50),
   balance: zod.coerce.number(),
-  currency: zod.string().length(3),
+  currency: zod.string().min(2, {
+    message: "Please select a currency.",
+  }),
 });
 
 function CreateAccountDialog(props: {
@@ -42,17 +45,14 @@ function CreateAccountDialog(props: {
     defaultValues: {
       name: "",
       balance: 0,
-      currency: "EUR",
+      currency: undefined,
     },
   });
 
   async function onSubmit(values: zod.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
 
     try {
       await props.addAccount(values);
-      console.log(values);
       form.reset();
     } catch (e) {
       console.error(e);
@@ -97,19 +97,28 @@ function CreateAccountDialog(props: {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="currency"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Currency</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Currency" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+         <FormField
+          control={form.control}
+          name="currency"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Currency</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a currency for an account" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {currencies.map(currency => {
+                    return <SelectItem key={currency.currencyCode} value={currency.currencyCode}>{currency.currencyCode} | {currency.name}</SelectItem>
+                  })}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
             <DialogFooter>
               {form.formState.isValid ? (
                 <DialogClose asChild>
