@@ -20,8 +20,10 @@ import {
 import { useAuth0 } from "@auth0/auth0-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CreateAccount } from "my-wallet-shared-types/shared-types";
+import { useState } from "react";
 
 function Accounts() {
+  const [page, setPage] = useState<number>(1);
   const { toast } = useToast();
   const { getAccessTokenSilently } = useAuth0();
   const queryClient = useQueryClient();
@@ -32,11 +34,11 @@ function Accounts() {
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["accounts"],
+    queryKey: ["accounts", page],
     queryFn: async () => {
       const token = await getAccessTokenSilently();
 
-      return fetchAccounts(token);
+      return fetchAccounts(token, page);
     },
   });
 
@@ -90,7 +92,7 @@ function Accounts() {
   if (error) {
     return <Error refetch={refetch} />;
   }
-  if (accounts && accounts.length === 0) {
+  if (accounts && accounts?.items.length === 0) {
     return (
       <EmptyState
         message="There is no accaount created"
@@ -111,7 +113,7 @@ function Accounts() {
         <CardDescription>User accounts</CardDescription>
       </CardHeader>
       <CardContent>
-        <AccountsTable accounts={accounts ?? []} deleteButton={deleteButton} />
+        {accounts && <AccountsTable accounts={accounts} deleteButton={deleteButton} setPage={setPage} currentPage={page}/>}
       </CardContent>
     </Card>
   );
