@@ -7,6 +7,7 @@ import { checkIsRegistered, registerUser } from "./services/api-calls/users";
 import { ThemeProvider } from "./components/theme-provider";
 import { AuthenticationGuard } from "./components/authentication-guard";
 import { Toaster } from "./components/ui/toaster";
+import Transactions from "./pages/Transactions";
 
 const queryClient = new QueryClient();
 
@@ -55,6 +56,10 @@ const App = () => {
               <Route
                 path="/accounts"
                 element={<AuthenticationGuard component={Accounts} />}
+              />
+              <Route
+                path="/transactions"
+                element={<AuthenticationGuard component={Transactions} />}
               />
             </Route>
           </Routes>

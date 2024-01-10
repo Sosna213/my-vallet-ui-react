@@ -12,5 +12,10 @@ export const sidebarLinks: INavLink[] = [
     route: "/accounts",
     label: "Accounts",
     needsAuthentication: true,
+  },  {
+    imgURL: "/assets/icons/transactions.svg",
+    route: "/transactions",
+    label: "Transactions",
+    needsAuthentication: true,
   },
 ];

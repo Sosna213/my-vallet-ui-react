@@ -22,11 +22,12 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CreateAccount } from "my-wallet-shared-types/shared-types";
 import { useState } from "react";
 
-function Accounts() {
+function Accounts(props: { readonly?: boolean } = { readonly: false }) {
   const [page, setPage] = useState<number>(1);
   const { toast } = useToast();
   const { getAccessTokenSilently } = useAuth0();
   const queryClient = useQueryClient();
+  const { readonly } = props;
 
   const {
     data: accounts,
@@ -34,11 +35,12 @@ function Accounts() {
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["accounts", page],
+    queryKey: ["accounts"],
     queryFn: async () => {
       const token = await getAccessTokenSilently();
+      
 
-      return fetchAccounts(token, page);
+      return fetchAccounts(token, page, readonly ? 3 : 10);
     },
   });
 
@@ -66,7 +68,7 @@ function Accounts() {
     },
   });
 
-  const deleteButton = (accountId: number) => {
+  const deleteButton =(accountId: number) => {
     return (
       <DropdownMenuItem
         onClick={async () => {
@@ -92,28 +94,36 @@ function Accounts() {
   if (error) {
     return <Error refetch={refetch} />;
   }
-  if (accounts && accounts?.items.length === 0) {
+  if (accounts && accounts.items.length === 0) {
     return (
       <EmptyState
         message="There is no accaount created"
-        button={addAccoutnButton}
+        button={!readonly ? addAccoutnButton : undefined}
+        small={readonly}
       />
     );
   }
 
   return (
-    <Card className="w-full ">
+    <Card className="w-full">
       <CardHeader>
         <CardTitle>
           <div className="grid grid-cols-2">
             <div>Accounts</div>
-            <div className="text-end">{addAccoutnButton}</div>
+            {!readonly && <div className="text-end">{addAccoutnButton}</div>}
           </div>
         </CardTitle>
         <CardDescription>User accounts</CardDescription>
       </CardHeader>
       <CardContent>
-        {accounts && <AccountsTable accounts={accounts} deleteButton={deleteButton} setPage={setPage} currentPage={page}/>}
+        {accounts && (
+          <AccountsTable
+            accounts={accounts}
+            deleteButton={!readonly ? deleteButton : undefined}
+            setPage={setPage}
+            currentPage={page}
+          />
+        )}
       </CardContent>
     </Card>
   );

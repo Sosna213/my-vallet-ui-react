@@ -50,9 +50,18 @@ const Topbar = () => {
   return (
     <section className="topbar">
       <div className="flex-between py-4 px-5">
-        <Link to="/" className="felx gap-3 items-center">
-          <img className="w-12" src={"/assets/logo.png"} alt="logo" />
-        </Link>
+        <div className="flex-between gap-3">
+          <Link to="/" className="felx gap-3 items-center">
+            <img
+              className="w-14 dark:invert ml-5"
+              src={"/assets/logo.svg"}
+              alt="logo"
+            />
+          </Link>
+          <Link to="/" className="felx gap-3 items-center">
+            <span className=" font-bold text-2xl">My wallet</span>
+          </Link>
+        </div>
         <div className="flex flex-nowrap gap-4">
           <ModeToggle />
           {buttons}
