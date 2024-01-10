@@ -39,6 +39,10 @@ const getColumns = (
       cell: ({ row }) => {
         const account = row.original;
 
+        if(!deleteButton){
+          return null;
+        }
+
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

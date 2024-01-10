@@ -79,7 +79,7 @@
 
   /* Topbar */
   .topbar {
-    @apply sticky top-0 z-50 w-full;
+    @apply h-20 w-full;
   }
 
   /* Left sidebar */
