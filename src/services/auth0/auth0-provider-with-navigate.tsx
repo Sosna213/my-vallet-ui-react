@@ -18,6 +18,8 @@ export const Auth0ProviderWithNavigate = ({
   } = import.meta.env;
 
   const onRedirectCallback = async (appState?: AppState) => {    
+    console.log(appState);
+    
     navigate(appState?.returnTo || window.location.pathname);
   };
 

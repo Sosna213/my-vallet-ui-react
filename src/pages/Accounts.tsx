@@ -3,6 +3,8 @@ import CreateAccountDialog from "@/components/account/CreateAccountDialog";
 import EmptyState from "@/components/shared/EmptyState";
 import Error from "@/components/shared/Error";
 import Loading from "@/components/shared/Loading";
+import CreateTransactionDialog from "@/components/transaction/CreateTransactionDialog";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -10,20 +12,26 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/components/ui/use-toast";
 import {
   fetchAccounts,
   createAccount,
   deleteAccount,
 } from "@/services/api-calls/accounts";
+import { createTransaction } from "@/services/api-calls/transactions";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { CreateAccount } from "my-wallet-shared-types/shared-types";
+import {
+  CreateAccount,
+  CreateTransactionDTO,
+} from "my-wallet-shared-types/shared-types";
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 function Accounts(props: { readonly?: boolean } = { readonly: false }) {
-  const [page, setPage] = useState<number>(1);
+  const [searchParams] = useSearchParams();
+  
+  const [page, setPage] = useState<number>(Number(searchParams.get('page') ?? 1));
   const { toast } = useToast();
   const { getAccessTokenSilently } = useAuth0();
   const queryClient = useQueryClient();
@@ -35,10 +43,9 @@ function Accounts(props: { readonly?: boolean } = { readonly: false }) {
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["accounts"],
+    queryKey: ["accounts", {page}],
     queryFn: async () => {
       const token = await getAccessTokenSilently();
-      
 
       return fetchAccounts(token, page, readonly ? 3 : 10);
     },
@@ -58,7 +65,7 @@ function Accounts(props: { readonly?: boolean } = { readonly: false }) {
   const addAccoutnButton = <CreateAccountDialog addAccount={addAcount} />;
 
   const { mutateAsync: deleteAcc } = useMutation({
-    mutationFn: async (accountId: number) => {
+    mutationFn: async (accountId: string) => {
       const token = await getAccessTokenSilently();
 
       return deleteAccount(token, accountId);
@@ -68,9 +75,23 @@ function Accounts(props: { readonly?: boolean } = { readonly: false }) {
     },
   });
 
-  const deleteButton =(accountId: number) => {
+  const { mutateAsync: addTransaction } = useMutation({
+    mutationFn: async (transactionToCreate: CreateTransactionDTO) => {
+      const token = await getAccessTokenSilently();
+
+      return createTransaction(token, transactionToCreate);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      queryClient.invalidateQueries({ queryKey: ["accounts"] });
+    },
+  });
+
+  const deleteButton = (accountId: string) => {
     return (
-      <DropdownMenuItem
+      <Button
+        className="w-full font-normal"
+        variant={"ghost"}
         onClick={async () => {
           try {
             await deleteAcc(accountId);
@@ -84,7 +105,15 @@ function Accounts(props: { readonly?: boolean } = { readonly: false }) {
         }}
       >
         Delete
-      </DropdownMenuItem>
+      </Button>
+    );
+  };
+  const addTransactionButton = (accountId: string) => {
+    return (
+      <CreateTransactionDialog
+        accountId={accountId}
+        addTransaction={addTransaction}
+      />
     );
   };
 
@@ -120,6 +149,7 @@ function Accounts(props: { readonly?: boolean } = { readonly: false }) {
           <AccountsTable
             accounts={accounts}
             deleteButton={!readonly ? deleteButton : undefined}
+            addTransaction={!readonly ? addTransactionButton : undefined}
             setPage={setPage}
             currentPage={page}
           />
