@@ -1,7 +1,5 @@
 import { GetAccount } from "my-wallet-shared-types/shared-types";
-import {
-  ColumnDef,
-} from "@tanstack/react-table";
+import { ColumnDef, getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,13 +12,10 @@ import { PaginatorInput, ResultWithPagination } from "@/types";
 import Datatable from "../shared/DataTable/DataTable";
 
 const getColumns = (
-  deleteButton?: (accountId: number) => JSX.Element
+  deleteButton?: (accountId: string) => JSX.Element,
+  addTransaction?: (accountId: string) => JSX.Element
 ): ColumnDef<GetAccount>[] => {
   return [
-    {
-      accessorKey: "id",
-      header: "ID",
-    },
     {
       accessorKey: "name",
       header: "Name",
@@ -39,12 +34,12 @@ const getColumns = (
       cell: ({ row }) => {
         const account = row.original;
 
-        if(!deleteButton){
+        if (!deleteButton || !addTransaction) {
           return null;
         }
 
         return (
-          <DropdownMenu>
+          <DropdownMenu modal={true}>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="h-8 w-8 p-0">
                 <span className="sr-only">Open menu</span>
@@ -53,7 +48,14 @@ const getColumns = (
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              {deleteButton ? deleteButton(account.id) : null}
+              {deleteButton ? (
+                <div className="w-full flex justify-center">
+                  {deleteButton(account.id)}
+                </div>
+              ) : null}
+              {addTransaction ? (
+                <div className="w-full">{addTransaction(account.id)}</div>
+              ) : null}
             </DropdownMenuContent>
           </DropdownMenu>
         );
@@ -64,17 +66,30 @@ const getColumns = (
 
 export default function AccountsTable(props: {
   accounts: ResultWithPagination<GetAccount>;
-  deleteButton?: (accountId: number) => JSX.Element;
+  deleteButton?: (accountId: string) => JSX.Element;
+  addTransaction?: (accountId: string) => JSX.Element;
   setPage: React.Dispatch<React.SetStateAction<number>>;
   currentPage: number;
 }) {
-  const columns = getColumns(props.deleteButton);
+  const columns = getColumns(props.deleteButton, props.addTransaction);
 
   const paginator: PaginatorInput = {
     setPage: props.setPage,
     currentPage: props.currentPage,
-    maxPage: props.accounts.meta.totalPages
+    maxPage: props.accounts.meta.totalPages,
   };
 
-  return <Datatable<GetAccount> columns={columns} result={props.accounts} paginator={paginator} />;
+  const table = useReactTable({
+    data: props.accounts.items,
+    columns: columns,
+    getCoreRowModel: getCoreRowModel(),
+  });
+
+
+  return (
+    <Datatable<GetAccount>
+      table={table}
+    paginator={paginator}
+    />
+  );
 }

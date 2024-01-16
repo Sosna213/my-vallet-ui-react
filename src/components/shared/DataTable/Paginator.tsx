@@ -13,7 +13,7 @@ export default function Paginator(props: { paginator: PaginatorInput }) {
   const {
     paginator: { currentPage, setPage, maxPage },
   } = props;
-  const array = [...Array(maxPage).keys()].map(val => val+1);
+  const array = [...Array(maxPage).keys()].map((val) => val + 1);
   const index = array.indexOf(currentPage);
 
   const start = Math.max(0, index - 1);
@@ -22,37 +22,33 @@ export default function Paginator(props: { paginator: PaginatorInput }) {
   const pages = array.slice(start, end + 1);
 
   return (
-    <Pagination className=" mt-4">
+    <Pagination className="mt-4 mb-4">
       <PaginationContent>
         <PaginationItem>
-          <a>
-            <Link to={`?page=${currentPage - 1}`}>
-              <Button
-                variant={"ghost"}
-                disabled={currentPage - 1 <= 0}
-                onClick={() => {
-                  setPage(Number(currentPage - 1));
-                }}
-              >
-                <ChevronLeftIcon className="h-4 w-4" /> Previous
-              </Button>
-            </Link>
-          </a>
+          <Link to={`?page=${currentPage - 1}`}>
+            <Button
+              variant={"ghost"}
+              disabled={currentPage - 1 <= 0}
+              onClick={() => {
+                setPage(Number(currentPage - 1));
+              }}
+            >
+              <ChevronLeftIcon className="h-4 w-4" /> Previous
+            </Button>
+          </Link>
         </PaginationItem>
         {!pages.includes(1) && (
           <PaginationItem>
-            <a>
-              <Link to={`?page=${1}`}>
-                <Button
-                  variant={1 === currentPage ? "default" : "ghost"}
-                  onClick={() => {
-                    setPage(1);
-                  }}
-                >
-                  {1}
-                </Button>
-              </Link>
-            </a>
+            <Link to={`?page=${1}`}>
+              <Button
+                variant={1 === currentPage ? "default" : "ghost"}
+                onClick={() => {
+                  setPage(1);
+                }}
+              >
+                {1}
+              </Button>
+            </Link>
           </PaginationItem>
         )}
         {!pages.includes(2) && (
@@ -62,57 +58,53 @@ export default function Paginator(props: { paginator: PaginatorInput }) {
         )}
         {pages.map((val) => {
           return (
-            <PaginationItem>
-              <a>
-                <Link to={`?page=${val}`}>
-                  <Button
-                    variant={val === currentPage ? "default" : "ghost"}
-                    onClick={() => {
-                      setPage(val);
-                    }}
-                  >
-                    {val}
-                  </Button>
-                </Link>
-              </a>
+            <PaginationItem key={val}>
+              <Link to={`?page=${val}`}>
+                <Button
+                  variant={val === currentPage ? "default" : "ghost"}
+                  onClick={() => {
+                    setPage(val);
+                  }}
+                >
+                  {val}
+                </Button>
+              </Link>
             </PaginationItem>
           );
         })}
-        {!pages.includes(maxPage-1) && (
+        {!pages.includes(maxPage - 1) && (
           <PaginationItem>
             <PaginationEllipsis />
           </PaginationItem>
         )}
         {!pages.includes(maxPage) && (
           <PaginationItem>
-            <a>
-              <Link to={`?page=${maxPage}`}>
-                <Button
-                  variant={maxPage === currentPage ? "default" : "ghost"}
-                  onClick={() => {
-                    setPage(maxPage);
-                  }}
-                >
-                  {maxPage}
-                </Button>
-              </Link>
-            </a>
+            <Link to={`?page=${maxPage}`}>
+              <Button
+                variant={maxPage === currentPage ? "default" : "ghost"}
+                onClick={() => {
+                  setPage(maxPage);
+                }}
+              >
+                {maxPage}
+              </Button>
+            </Link>
           </PaginationItem>
         )}
         <PaginationItem>
-          <a>
-            <Link to={`?page=${currentPage + 1}`}>
-              <Button
-                variant={"ghost"}
-                disabled={currentPage + 1 > maxPage}
-                onClick={() => {
-                  setPage(Number(currentPage + 1));
-                }}
-              >
-                Next <ChevronRightIcon className="h-4 w-4" />
-              </Button>
-            </Link>
-          </a>
+          <Link
+            to={currentPage + 1 > maxPage ? "" : `?page=${currentPage + 1}`}
+          >
+            <Button
+              variant={"ghost"}
+              disabled={currentPage + 1 > maxPage}
+              onClick={() => {
+                setPage(Number(currentPage + 1));
+              }}
+            >
+              Next <ChevronRightIcon className="h-4 w-4" />
+            </Button>
+          </Link>
         </PaginationItem>
       </PaginationContent>
     </Pagination>

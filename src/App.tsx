@@ -63,9 +63,9 @@ const App = () => {
               />
             </Route>
           </Routes>
-          <Toaster />
         </QueryClientProvider>
       </main>
+      <Toaster />
     </ThemeProvider>
   );
 };

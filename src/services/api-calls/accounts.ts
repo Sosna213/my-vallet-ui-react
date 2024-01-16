@@ -7,7 +7,7 @@ import {
 
 export const fetchAccounts = async (token: string, page: number = 1, perPage: number = 10): Promise<ResultWithPagination<GetAccount>> => {
   const url = import.meta.env.VITE_API_SERVER_URL;
-  const response = await axios.get<GetAccount[]>(
+  const response = await axios.get<ResultWithPagination<GetAccount>>(
     `${url}/api/account/user-accounts`,
     {
       headers: {
@@ -37,7 +37,7 @@ export const createAccount = async (
 
 export const deleteAccount = async (
     token: string,
-    accountId: number
+    accountId: string
   ): Promise<unknown> => {
     const url = import.meta.env.VITE_API_SERVER_URL;
     const response = await axios.delete(`${url}/api/account/delete/${accountId}`, {
