@@ -1,15 +1,19 @@
-import DataTableFilter from "../shared/DataTable/DataTableFilter";
+import DataTableSelectableFilter from "../shared/DataTable/DataTableSelectableFilter";
 import { Button } from "../ui/button";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import {
   setTransactionName,
   setCategory,
   resetFilters,
+  setEq,
+  setGte,
+  setLte,
 } from "@/services/state/transactions-filters/transactions-filter-slice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/services/state/store";
 import { Input } from "../ui/input";
 import { TransactionsCategories } from "@/utils/enums";
+import DataTableNumericFilter from "../shared/DataTable/DataTableNumericFilter";
 
 function TransactionTableToolbar() {
   const dispatch = useDispatch();
@@ -27,7 +31,7 @@ function TransactionTableToolbar() {
           className="h-8 w-[150px] lg:w-[250px]"
         />
 
-        <DataTableFilter
+        <DataTableSelectableFilter
           setFilterValue={(filters: string[]) => {
             dispatch(setCategory(filters));
           }}
@@ -38,6 +42,21 @@ function TransactionTableToolbar() {
               return { label: value, value: value };
             }),
           ]}
+        />
+        <DataTableNumericFilter
+          title="Amount"
+          setFilterValue={(
+            eq: number | undefined,
+            from: number | undefined,
+            to: number | undefined
+          ) => {            
+            dispatch(setEq(eq));
+            dispatch(setGte(from));
+            dispatch(setLte(to));
+          }}
+          filterValueEq={filters.eq}
+          filterValueFrom={filters.gte}
+          filterValueTo={filters.lte}
         />
         <Button
           variant="ghost"

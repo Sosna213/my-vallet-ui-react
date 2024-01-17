@@ -7,6 +7,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { format } from "date-fns";
+import { FormattedNumber } from "react-intl";
 
 const getColumns = (): ColumnDef<GetTransactionDTO>[] => {
   return [
@@ -17,16 +18,25 @@ const getColumns = (): ColumnDef<GetTransactionDTO>[] => {
     {
       accessorKey: "account.name",
       header: "Account name",
-    
     },
     {
-      accessorKey: "category",
+      accessorKey: "category",  
       header: "Category",
-    
     },
     {
       accessorKey: "amount",
       header: "Amount",
+      cell: ({ row }) => {        
+        return (
+          <div>
+            <FormattedNumber
+              value={row.getValue("amount")}
+              style="currency"
+              currency={row.original.account.currency}
+            />
+          </div>
+        );
+      },
     },
     {
       accessorKey: "date",

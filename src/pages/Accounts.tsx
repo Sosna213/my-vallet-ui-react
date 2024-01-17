@@ -4,6 +4,17 @@ import EmptyState from "@/components/shared/EmptyState";
 import Error from "@/components/shared/Error";
 import Loading from "@/components/shared/Loading";
 import CreateTransactionDialog from "@/components/transaction/CreateTransactionDialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -30,8 +41,10 @@ import { useSearchParams } from "react-router-dom";
 
 function Accounts(props: { readonly?: boolean } = { readonly: false }) {
   const [searchParams] = useSearchParams();
-  
-  const [page, setPage] = useState<number>(Number(searchParams.get('page') ?? 1));
+
+  const [page, setPage] = useState<number>(
+    Number(searchParams.get("page") ?? 1)
+  );
   const { toast } = useToast();
   const { getAccessTokenSilently } = useAuth0();
   const queryClient = useQueryClient();
@@ -43,7 +56,7 @@ function Accounts(props: { readonly?: boolean } = { readonly: false }) {
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["accounts", {page}],
+    queryKey: ["accounts", { page }],
     queryFn: async () => {
       const token = await getAccessTokenSilently();
 
@@ -89,23 +102,40 @@ function Accounts(props: { readonly?: boolean } = { readonly: false }) {
 
   const deleteButton = (accountId: string) => {
     return (
-      <Button
-        className="w-full font-normal"
-        variant={"ghost"}
-        onClick={async () => {
-          try {
-            await deleteAcc(accountId);
-            toast({
-              title: "Success",
-              description: "Account deleted successfuly.",
-            });
-          } catch (e) {
-            console.error(e);
-          }
-        }}
-      >
-        Delete
-      </Button>
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <Button className="font-normal w-full" variant="ghost">Delete</Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete your
+              account and remove your data from our servers.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction asChild={true}>
+              <Button
+                onClick={async () => {
+                  try {
+                    await deleteAcc(accountId);
+                    toast({
+                      title: "Success",
+                      description: "Account deleted successfuly.",
+                    });
+                  } catch (e) {
+                    console.error(e);
+                  }
+                }}
+              >
+                Confirm
+              </Button>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     );
   };
   const addTransactionButton = (accountId: string) => {
