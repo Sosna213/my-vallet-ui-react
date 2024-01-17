@@ -8,12 +8,14 @@ import { ThemeProvider } from "./components/theme-provider";
 import { AuthenticationGuard } from "./components/authentication-guard";
 import { Toaster } from "./components/ui/toaster";
 import Transactions from "./pages/Transactions";
+import { IntlProvider } from "react-intl";
 
 const queryClient = new QueryClient();
 
 const App = () => {
   const { isLoading, isAuthenticated, getAccessTokenSilently, user } =
     useAuth0();
+   const lang = navigator.language;
 
   if (isLoading) {
     return (
@@ -50,19 +52,21 @@ const App = () => {
     <ThemeProvider>
       <main className="flex h-screen">
         <QueryClientProvider client={queryClient}>
-          <Routes>
-            <Route element={<Layout />}>
-              <Route index element={<Home />} />
-              <Route
-                path="/accounts"
-                element={<AuthenticationGuard component={Accounts} />}
-              />
-              <Route
-                path="/transactions"
-                element={<AuthenticationGuard component={Transactions} />}
-              />
-            </Route>
-          </Routes>
+          <IntlProvider locale={lang ?? "en"}>
+            <Routes>
+              <Route element={<Layout />}>
+                <Route index element={<Home />} />
+                <Route
+                  path="/accounts"
+                  element={<AuthenticationGuard component={Accounts} />}
+                />
+                <Route
+                  path="/transactions"
+                  element={<AuthenticationGuard component={Transactions} />}
+                />
+              </Route>
+            </Routes>
+          </IntlProvider>
         </QueryClientProvider>
       </main>
       <Toaster />

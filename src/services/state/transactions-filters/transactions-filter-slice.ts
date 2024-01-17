@@ -27,13 +27,13 @@ const transactionsFilterSlice = createSlice({
         
       state.category = action.payload;
     },
-    setEq(state, action: PayloadAction<number>) {
+    setEq(state, action: PayloadAction<number | undefined>) {
       state.eq = action.payload;
     },
-    setGte(state, action: PayloadAction<number>) {
+    setGte(state, action: PayloadAction<number | undefined>) {
       state.gte = action.payload;
     },
-    setLte(state, action: PayloadAction<number>) {
+    setLte(state, action: PayloadAction<number | undefined>) {
       state.lte = action.payload;
     },
     setPeriod(

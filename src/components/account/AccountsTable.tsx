@@ -10,6 +10,7 @@ import { Button } from "../ui/button";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { PaginatorInput, ResultWithPagination } from "@/types";
 import Datatable from "../shared/DataTable/DataTable";
+import { FormattedNumber } from "react-intl";
 
 const getColumns = (
   deleteButton?: (accountId: string) => JSX.Element,
@@ -23,10 +24,17 @@ const getColumns = (
     {
       accessorKey: "balance",
       header: "Balance",
-    },
-    {
-      accessorKey: "currency",
-      header: "Currency",
+      cell: ({ row }) => {        
+        return (
+          <div>
+            <FormattedNumber
+              value={row.getValue("balance")}
+              style="currency"
+              currency={row.original.currency}
+            />
+          </div>
+        );
+      },
     },
     {
       id: "actions",
