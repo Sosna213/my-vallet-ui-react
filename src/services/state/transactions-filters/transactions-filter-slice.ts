@@ -36,12 +36,11 @@ const transactionsFilterSlice = createSlice({
     setLte(state, action: PayloadAction<number | undefined>) {
       state.lte = action.payload;
     },
-    setPeriod(
-      state,
-      action: PayloadAction<{ fromDate: string; toDate: string }>
-    ) {
-      state.fromDate = action.payload.fromDate;
-      state.toDate = action.payload.toDate;
+    setDateFrom(state, action: PayloadAction<string>) {
+      state.fromDate = action.payload;
+    },
+    setDateTo(state, action: PayloadAction<string>) {
+      state.toDate = action.payload;
     },
     resetFilters(state) {
       Object.assign(state, initialState);
@@ -56,7 +55,8 @@ export const {
   setEq,
   setGte,
   setLte,
-  setPeriod,
+  setDateFrom,
+  setDateTo,
   resetFilters,
 } = transactionsFilterSlice.actions;
 

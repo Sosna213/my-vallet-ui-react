@@ -8,12 +8,15 @@ import {
   setEq,
   setGte,
   setLte,
+  setDateFrom,
+  setDateTo,
 } from "@/services/state/transactions-filters/transactions-filter-slice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/services/state/store";
 import { Input } from "../ui/input";
 import { TransactionsCategories } from "@/utils/enums";
 import DataTableNumericFilter from "../shared/DataTable/DataTableNumericFilter";
+import DataTableDateFilter from "../shared/DataTable/DataTableDateFilter";
 
 function TransactionTableToolbar() {
   const dispatch = useDispatch();
@@ -49,7 +52,7 @@ function TransactionTableToolbar() {
             eq: number | undefined,
             from: number | undefined,
             to: number | undefined
-          ) => {            
+          ) => {
             dispatch(setEq(eq));
             dispatch(setGte(from));
             dispatch(setLte(to));
@@ -57,6 +60,19 @@ function TransactionTableToolbar() {
           filterValueEq={filters.eq}
           filterValueFrom={filters.gte}
           filterValueTo={filters.lte}
+        />
+        <DataTableDateFilter
+          title="Date"
+          filterPeriodFrom={filters.fromDate ? new Date(filters.fromDate) : undefined}
+          filterPeriodTo={filters.toDate ? new Date(filters.toDate) : undefined}
+          setPeriodValues={(from, to) => {
+            if (from !== undefined) {
+              dispatch(setDateFrom(from.toISOString()));
+            }
+            if (to !== undefined) {
+              dispatch(setDateTo(to.toISOString()));
+            }
+          }}
         />
         <Button
           variant="ghost"
