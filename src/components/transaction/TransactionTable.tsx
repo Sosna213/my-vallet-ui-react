@@ -8,6 +8,7 @@ import {
 } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { FormattedNumber } from "react-intl";
+import { TransactionFacets } from "@/services/state/transactions-filters/transactions-facets-slice";
 
 const getColumns = (): ColumnDef<GetTransactionDTO>[] => {
   return [
@@ -47,7 +48,7 @@ const getColumns = (): ColumnDef<GetTransactionDTO>[] => {
 };
 
 function TransactionTable(props: {
-  transactions: ResultWithPagination<GetTransactionDTO>;
+  transactions: ResultWithPagination<GetTransactionDTO, TransactionFacets>;
   setPage: React.Dispatch<React.SetStateAction<number>>;
   currentPage: number;
 }) {

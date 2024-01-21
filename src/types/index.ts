@@ -5,8 +5,8 @@ export type INavLink = {
   needsAuthentication: boolean;
 };
 
-export type ResultWithPagination<T> = {
-  items: T[];
+export type ResultWithPagination<TItem, TFacets> = {
+  items: TItem[];
   meta: {
     currentPage: number;
     itemCount: number;
@@ -14,6 +14,7 @@ export type ResultWithPagination<T> = {
     totalItems: number;
     totalPages: number;
   };
+  facets?: TFacets
 };
 
 export type PaginatorInput = {

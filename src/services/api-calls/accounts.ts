@@ -5,9 +5,9 @@ import {
   CreateAccount,
 } from "@/../my-wallet-shared-types/shared-types";
 
-export const fetchAccounts = async (token: string, page: number = 1, perPage: number = 10): Promise<ResultWithPagination<GetAccount>> => {
+export const fetchAccounts = async (token: string, page: number = 1, perPage: number = 10): Promise<ResultWithPagination<GetAccount, null>> => {
   const url = import.meta.env.VITE_API_SERVER_URL;
-  const response = await axios.get<ResultWithPagination<GetAccount>>(
+  const response = await axios.get<ResultWithPagination<GetAccount, null>>(
     `${url}/api/account/user-accounts`,
     {
       headers: {

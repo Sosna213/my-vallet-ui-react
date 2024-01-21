@@ -29,7 +29,7 @@ import {
   createAccount,
   deleteAccount,
 } from "@/services/api-calls/accounts";
-import { createTransaction } from "@/services/api-calls/transactions";
+import { createTransaction, createTransactions } from "@/services/api-calls/transactions";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -163,8 +163,14 @@ function Accounts(props: { readonly?: boolean } = { readonly: false }) {
     );
   }
 
+
+
   return (
     <Card className="w-full">
+      <Button onClick={async () => {
+        const token = await getAccessTokenSilently();
+        createTransactions(token)
+      }}>Test</Button>
       <CardHeader>
         <CardTitle>
           <div className="grid grid-cols-2">
