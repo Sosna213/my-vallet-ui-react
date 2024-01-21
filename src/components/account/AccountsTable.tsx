@@ -73,7 +73,7 @@ const getColumns = (
 };
 
 export default function AccountsTable(props: {
-  accounts: ResultWithPagination<GetAccount>;
+  accounts: ResultWithPagination<GetAccount, null>;
   deleteButton?: (accountId: string) => JSX.Element;
   addTransaction?: (accountId: string) => JSX.Element;
   setPage: React.Dispatch<React.SetStateAction<number>>;

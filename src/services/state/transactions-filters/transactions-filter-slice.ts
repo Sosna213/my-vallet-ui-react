@@ -5,6 +5,7 @@ const initialState: TransactionsFilters = {
   transactionName: undefined,
   accountId: undefined,
   category: undefined,
+  currency: undefined,
   eq: undefined,
   gte: undefined,
   lte: undefined,
@@ -23,9 +24,10 @@ const transactionsFilterSlice = createSlice({
       state.accountId = action.payload;
     },
     setCategory(state, action: PayloadAction<string[]>) {
-        console.log(action.payload);
-        
       state.category = action.payload;
+    },
+    setCurrency(state, action: PayloadAction<string[]>) {
+      state.currency = action.payload;
     },
     setEq(state, action: PayloadAction<number | undefined>) {
       state.eq = action.payload;
@@ -52,6 +54,7 @@ export const {
   setTransactionName,
   setAccountId,
   setCategory,
+  setCurrency,
   setEq,
   setGte,
   setLte,

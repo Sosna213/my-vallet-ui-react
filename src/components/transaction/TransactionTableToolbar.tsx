@@ -10,17 +10,19 @@ import {
   setLte,
   setDateFrom,
   setDateTo,
+  setAccountId,
+  setCurrency,
 } from "@/services/state/transactions-filters/transactions-filter-slice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/services/state/store";
 import { Input } from "../ui/input";
-import { TransactionsCategories } from "@/utils/enums";
 import DataTableNumericFilter from "../shared/DataTable/DataTableNumericFilter";
 import DataTableDateFilter from "../shared/DataTable/DataTableDateFilter";
 
 function TransactionTableToolbar() {
   const dispatch = useDispatch();
   const filters = useSelector((state: RootState) => state.transactionsFilter);
+  const facets = useSelector((state: RootState) => state.transactionsFacets);
 
   return (
     <div className="flex items-center justify-between mb-4">
@@ -33,18 +35,21 @@ function TransactionTableToolbar() {
           }
           className="h-8 w-[150px] lg:w-[250px]"
         />
-
         <DataTableSelectableFilter
+          facetsValue={facets.account ? facets.account : []}
+          setFilterValue={(filters: string[]) => {
+            dispatch(setAccountId(filters));
+          }}
+          selectedFilterValues={filters.accountId}
+          title="Account"
+        />
+        <DataTableSelectableFilter
+          facetsValue={facets.category ? facets.category : []}
           setFilterValue={(filters: string[]) => {
             dispatch(setCategory(filters));
           }}
           selectedFilterValues={filters.category}
           title="Category"
-          options={[
-            ...Object.values(TransactionsCategories).map((value) => {
-              return { label: value, value: value };
-            }),
-          ]}
         />
         <DataTableNumericFilter
           title="Amount"
@@ -63,7 +68,9 @@ function TransactionTableToolbar() {
         />
         <DataTableDateFilter
           title="Date"
-          filterPeriodFrom={filters.fromDate ? new Date(filters.fromDate) : undefined}
+          filterPeriodFrom={
+            filters.fromDate ? new Date(filters.fromDate) : undefined
+          }
           filterPeriodTo={filters.toDate ? new Date(filters.toDate) : undefined}
           setPeriodValues={(from, to) => {
             if (from !== undefined) {
@@ -73,6 +80,14 @@ function TransactionTableToolbar() {
               dispatch(setDateTo(to.toISOString()));
             }
           }}
+        />
+        <DataTableSelectableFilter
+          facetsValue={facets.currency ? facets.currency : []}
+          setFilterValue={(filters: string[]) => {
+            dispatch(setCurrency(filters));
+          }}
+          selectedFilterValues={filters.currency}
+          title="Currency"
         />
         <Button
           variant="ghost"
