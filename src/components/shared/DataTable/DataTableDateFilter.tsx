@@ -24,7 +24,7 @@ function DataTableDateFilter({
   filterPeriodTo,
   setPeriodValues,
   title,
-}: DataTableDateFilterProps) {
+}: DataTableDateFilterProps): React.ReactElement {
   const [date, setDate] = useState<DateRange | undefined>({
     from: filterPeriodFrom,
     to: filterPeriodTo,

@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useAuth0 } from "@auth0/auth0-react";
-import { ModeToggle } from "./ModeToggle";
+import { ModeToggle } from ".";
 
-const Topbar = () => {
+const Topbar = (): React.ReactElement => {
   const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
   const handleLogin = async () => {
     await loginWithRedirect({

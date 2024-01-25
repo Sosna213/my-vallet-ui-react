@@ -9,10 +9,14 @@ import { Button } from "@/components/ui/button";
 import { PaginatorInput } from "@/types";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 
-export default function Paginator(props: { paginator: PaginatorInput }) {
-  const {
-    paginator: { currentPage, setPage, maxPage },
-  } = props;
+
+interface PaginatorProps {
+  pagination: PaginatorInput;
+}
+
+export default function Paginator({
+  pagination: { currentPage, maxPage, setPage },
+}: PaginatorProps): React.ReactElement {
   const array = [...Array(maxPage).keys()].map((val) => val + 1);
   const index = array.indexOf(currentPage);
 

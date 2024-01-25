@@ -38,7 +38,7 @@ function DataTableFilter({
   setFilterValue,
   facetsValue,
   title,
-}: DataTableFacetedFilterProps) {
+}: DataTableFacetedFilterProps): React.ReactElement {
   const [selectedValues, setSelectedValues] = useState<Set<string>>(new Set(selectedFilterValues));
 
   useEffect(() => {

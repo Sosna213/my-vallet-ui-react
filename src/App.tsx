@@ -4,11 +4,11 @@ import { Accounts, Home, Layout } from "./pages";
 import { useAuth0 } from "@auth0/auth0-react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { checkIsRegistered, registerUser } from "./services/api-calls/users";
-import { ThemeProvider } from "./components/theme-provider";
-import { AuthenticationGuard } from "./components/authentication-guard";
+import { ThemeProvider } from "./components/ThemeProvider";
 import { Toaster } from "./components/ui/toaster";
 import Transactions from "./pages/Transactions";
 import { IntlProvider } from "react-intl";
+import AuthenticationGuard from "./components/AuthenticationGuard";
 
 const queryClient = new QueryClient();
 

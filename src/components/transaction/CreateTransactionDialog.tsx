@@ -50,12 +50,17 @@ const formSchema = zod.object({
   date: zod.date().max(new Date()),
 });
 
-function CreateTransactionDialog(props: {
+interface CreateTransactionDialogProps {
   accountId: string;
   addTransaction: (
     createTransactionData: CreateTransactionDTO
   ) => Promise<unknown>;
-}) {
+}
+
+function CreateTransactionDialog({
+  accountId,
+  addTransaction,
+}: CreateTransactionDialogProps): React.ReactElement {
   const { toast } = useToast();
   const today = new Date();
   today.setUTCHours(0,0,0,0);
@@ -75,11 +80,11 @@ function CreateTransactionDialog(props: {
       const input: CreateTransactionDTO = {
         name: values.name,
         amount: values.type === "outgoing" ? -values.amount : values.amount,
-        accountId: props.accountId,
+        accountId: accountId,
         category: values.category,
         date: values.date,
       };
-      await props.addTransaction(input);
+      await addTransaction(input);
 
       toast({
         title: "Success",
