@@ -31,7 +31,7 @@ function DataTableNumericFilter({
   filterValueTo,
   setFilterValue,
   title,
-}: DataTableNumericFilterProps) {
+}: DataTableNumericFilterProps): React.ReactElement {
   const [equals, setEquals] = useState<number | undefined>(filterValueEq);
   const [from, setFrom] = useState<number | undefined>(filterValueFrom);
   const [to, setTo] = useState<number | undefined>(filterValueTo);

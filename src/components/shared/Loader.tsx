@@ -1,4 +1,4 @@
-const Loader = () => {
+const Loader = (): React.ReactElement => {
     return (
         <span>Loader</span>
     ) 

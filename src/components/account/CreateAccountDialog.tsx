@@ -22,8 +22,15 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { currencies } from "@/constants/currencies";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 import { useToast } from "../ui/use-toast";
+import React from "react";
 
 const formSchema = zod.object({
   name: zod
@@ -38,9 +45,13 @@ const formSchema = zod.object({
   }),
 });
 
-function CreateAccountDialog(props: {
+interface CreateAccountDialogProps {
   addAccount: (crateAccountData: CreateAccount) => Promise<unknown>;
-}) {
+}
+
+const CreateAccountDialog = ({
+  addAccount,
+}: CreateAccountDialogProps): React.ReactElement => {
   const { toast } = useToast();
   const form = useForm<zod.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -52,12 +63,11 @@ function CreateAccountDialog(props: {
   });
 
   async function onSubmit(values: zod.infer<typeof formSchema>) {
-
     try {
-      await props.addAccount(values);
+      await addAccount(values);
       toast({
         title: "Success",
-        description: "Account created successfuly."
+        description: "Account created successfuly.",
       });
       form.reset();
     } catch (e) {
@@ -103,28 +113,38 @@ function CreateAccountDialog(props: {
                 </FormItem>
               )}
             />
-         <FormField
-          control={form.control}
-          name="currency"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Currency</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a currency for an account" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {currencies.map(currency => {
-                    return <SelectItem key={currency.currencyCode} value={currency.currencyCode}>{currency.currencyCode} | {currency.name}</SelectItem>
-                  })}
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+            <FormField
+              control={form.control}
+              name="currency"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Currency</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a currency for an account" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {currencies.map((currency) => {
+                        return (
+                          <SelectItem
+                            key={currency.currencyCode}
+                            value={currency.currencyCode}
+                          >
+                            {currency.currencyCode} | {currency.name}
+                          </SelectItem>
+                        );
+                      })}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <DialogFooter>
               {form.formState.isValid ? (
                 <DialogClose asChild>
@@ -139,6 +159,6 @@ function CreateAccountDialog(props: {
       </DialogContent>
     </Dialog>
   );
-}
+};
 
 export default CreateAccountDialog;

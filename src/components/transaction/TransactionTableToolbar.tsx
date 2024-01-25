@@ -1,4 +1,3 @@
-import DataTableSelectableFilter from "../shared/DataTable/DataTableSelectableFilter";
 import { Button } from "../ui/button";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import {
@@ -16,10 +15,10 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/services/state/store";
 import { Input } from "../ui/input";
-import DataTableNumericFilter from "../shared/DataTable/DataTableNumericFilter";
-import DataTableDateFilter from "../shared/DataTable/DataTableDateFilter";
+import { DataTableDateFilter, DataTableNumericFilter, DataTableSelectableFilter } from "../shared/DataTable";
 
-function TransactionTableToolbar() {
+
+function TransactionTableToolbar(): React.ReactElement {
   const dispatch = useDispatch();
   const filters = useSelector((state: RootState) => state.transactionsFilter);
   const facets = useSelector((state: RootState) => state.transactionsFacets);

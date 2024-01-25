@@ -1,66 +1,30 @@
 import { PaginatorInput, ResultWithPagination } from "@/types";
 import { GetTransactionDTO } from "my-wallet-shared-types/shared-types";
 import Datatable from "../shared/DataTable/DataTable";
-import {
-  ColumnDef,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import { format } from "date-fns";
-import { FormattedNumber } from "react-intl";
+import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { TransactionFacets } from "@/services/state/transactions-filters/transactions-facets-slice";
+import { getTransactionsColumns } from "./utils";
 
-const getColumns = (): ColumnDef<GetTransactionDTO>[] => {
-  return [
-    {
-      accessorKey: "name",
-      header: "Name",
-    },
-    {
-      accessorKey: "account.name",
-      header: "Account name",
-    },
-    {
-      accessorKey: "category",  
-      header: "Category",
-    },
-    {
-      accessorKey: "amount",
-      header: "Amount",
-      cell: ({ row }) => {        
-        return (
-          <div>
-            <FormattedNumber
-              value={row.getValue("amount")}
-              style="currency"
-              currency={row.original.account.currency}
-            />
-          </div>
-        );
-      },
-    },
-    {
-      accessorKey: "date",
-      header: "Date",
-      cell: ({ row }) => <div>{format(row.getValue("date"), "PPP")}</div>,
-    },
-  ];
-};
-
-function TransactionTable(props: {
+interface TransactionTableProps {
   transactions: ResultWithPagination<GetTransactionDTO, TransactionFacets>;
   setPage: React.Dispatch<React.SetStateAction<number>>;
   currentPage: number;
-}) {
+}
+
+function TransactionTable({
+  transactions,
+  setPage,
+  currentPage,
+}: TransactionTableProps): React.ReactElement {
   const paginator: PaginatorInput = {
-    setPage: props.setPage,
-    currentPage: props.currentPage,
-    maxPage: props.transactions.meta.totalPages,
+    setPage: setPage,
+    currentPage: currentPage,
+    maxPage: transactions.meta.totalPages,
   };
 
-  const columns = getColumns();
+  const columns = getTransactionsColumns();
   const table = useReactTable({
-    data: props.transactions.items,
+    data: transactions.items,
     columns: columns,
     getCoreRowModel: getCoreRowModel(),
   });

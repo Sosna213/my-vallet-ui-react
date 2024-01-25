@@ -1,21 +1,10 @@
 import AccountsTable from "@/components/account/AccountsTable";
 import CreateAccountDialog from "@/components/account/CreateAccountDialog";
+import DeleteAccountDialog from "@/components/account/DeleteAccountDialog";
 import EmptyState from "@/components/shared/EmptyState";
 import Error from "@/components/shared/Error";
 import Loading from "@/components/shared/Loading";
 import CreateTransactionDialog from "@/components/transaction/CreateTransactionDialog";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -23,13 +12,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useToast } from "@/components/ui/use-toast";
-import {
-  fetchAccounts,
-  createAccount,
-  deleteAccount,
-} from "@/services/api-calls/accounts";
-import { createTransaction, createTransactions } from "@/services/api-calls/transactions";
+import { fetchAccounts, createAccount } from "@/services/api-calls/accounts";
+import { createTransaction } from "@/services/api-calls/transactions";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -39,16 +23,18 @@ import {
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-function Accounts(props: { readonly?: boolean } = { readonly: false }) {
+interface AccountsProps {
+  readonly?: boolean;
+}
+
+function Accounts({ readonly = false }: AccountsProps) {
   const [searchParams] = useSearchParams();
 
   const [page, setPage] = useState<number>(
     Number(searchParams.get("page") ?? 1)
   );
-  const { toast } = useToast();
   const { getAccessTokenSilently } = useAuth0();
   const queryClient = useQueryClient();
-  const { readonly } = props;
 
   const {
     data: accounts,
@@ -77,17 +63,6 @@ function Accounts(props: { readonly?: boolean } = { readonly: false }) {
 
   const addAccoutnButton = <CreateAccountDialog addAccount={addAcount} />;
 
-  const { mutateAsync: deleteAcc } = useMutation({
-    mutationFn: async (accountId: string) => {
-      const token = await getAccessTokenSilently();
-
-      return deleteAccount(token, accountId);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["accounts"] });
-    },
-  });
-
   const { mutateAsync: addTransaction } = useMutation({
     mutationFn: async (transactionToCreate: CreateTransactionDTO) => {
       const token = await getAccessTokenSilently();
@@ -101,43 +76,9 @@ function Accounts(props: { readonly?: boolean } = { readonly: false }) {
   });
 
   const deleteButton = (accountId: string) => {
-    return (
-      <AlertDialog>
-        <AlertDialogTrigger asChild>
-          <Button className="font-normal w-full" variant="ghost">Delete</Button>
-        </AlertDialogTrigger>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete your
-              account and remove your data from our servers.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction asChild={true}>
-              <Button
-                onClick={async () => {
-                  try {
-                    await deleteAcc(accountId);
-                    toast({
-                      title: "Success",
-                      description: "Account deleted successfuly.",
-                    });
-                  } catch (e) {
-                    console.error(e);
-                  }
-                }}
-              >
-                Confirm
-              </Button>
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    );
+    return <DeleteAccountDialog accountId={accountId} />;
   };
+
   const addTransactionButton = (accountId: string) => {
     return (
       <CreateTransactionDialog
@@ -163,14 +104,8 @@ function Accounts(props: { readonly?: boolean } = { readonly: false }) {
     );
   }
 
-
-
   return (
     <Card className="w-full">
-      <Button onClick={async () => {
-        const token = await getAccessTokenSilently();
-        createTransactions(token)
-      }}>Test</Button>
       <CardHeader>
         <CardTitle>
           <div className="grid grid-cols-2">

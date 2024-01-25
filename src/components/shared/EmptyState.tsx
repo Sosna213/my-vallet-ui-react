@@ -1,6 +1,7 @@
+import React from "react";
 import { Card } from "../ui/card";
 
-export default function EmptyState(props: {message: string, button?: JSX.Element, small?: boolean}) {
+const EmptyState = (props: {message: string, button?: JSX.Element, small?: boolean}): React.ReactElement => {
   return (
     <Card className="flex w-full justify-center items-center flex-col flex-wrap">
         <img
@@ -14,3 +15,5 @@ export default function EmptyState(props: {message: string, button?: JSX.Element
     </Card>
   );
 }
+
+export default EmptyState;
