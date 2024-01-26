@@ -17,13 +17,20 @@ import TransactionTableToolbar from "@/components/transaction/TransactionTableTo
 import { TransactionsFilters } from "my-wallet-shared-types/shared-types";
 import { useDebounce } from "usehooks-ts";
 import { setTransactionsFilterFacets } from "@/components/transaction/utils";
+import { Loading } from "@/components/shared";
+import { useSearchParams } from "react-router-dom";
 
 interface TransactionsProps {
   readonly?: boolean;
 }
 
 function Transactions({ readonly = false }: TransactionsProps) {
-  const [page, setPage] = useState<number>(1);
+  const [searchParams] = useSearchParams();
+
+  const initPage = !readonly
+    ? searchParams.get("page") ?? 1
+    : 1;
+  const [page, setPage] = useState<number>(Number(initPage));
   const { getAccessTokenSilently } = useAuth0();
   const filters = useSelector((state: RootState) => state.transactionsFilter);
   const dispatch = useDispatch();
@@ -33,7 +40,7 @@ function Transactions({ readonly = false }: TransactionsProps) {
     setPage(1);
   }, [debouncedFilters]);
 
-  const { data, error, refetch } = useQuery({
+  const { data, error, refetch, isLoading } = useQuery({
     queryKey: ["transactions", { page, ...debouncedFilters }],
     select: (data) => {
       setTransactionsFilterFacets(data, dispatch);
@@ -56,7 +63,7 @@ function Transactions({ readonly = false }: TransactionsProps) {
   }
 
   return (
-    <Card className="w-full">
+    <Card className="w-full h-full">
       <CardHeader>
         <CardTitle>
           <div>Transactions</div>
@@ -65,12 +72,16 @@ function Transactions({ readonly = false }: TransactionsProps) {
       </CardHeader>
       <CardContent>
         <TransactionTableToolbar />
-        {data?.items && (
-          <TransactionTable
-            transactions={data}
-            setPage={setPage}
-            currentPage={page}
-          />
+        {isLoading ? (
+          <Loading />
+        ) : (
+          data?.items && (
+            <TransactionTable
+              transactions={data}
+              setPage={setPage}
+              currentPage={page}
+            />
+          )
         )}
       </CardContent>
     </Card>

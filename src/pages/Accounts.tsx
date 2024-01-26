@@ -29,9 +29,11 @@ interface AccountsProps {
 
 function Accounts({ readonly = false }: AccountsProps) {
   const [searchParams] = useSearchParams();
+  const initPage = !readonly ? searchParams.get("page") ?? 1 : 1;
+
 
   const [page, setPage] = useState<number>(
-    Number(searchParams.get("page") ?? 1)
+    Number(Number(initPage))
   );
   const { getAccessTokenSilently } = useAuth0();
   const queryClient = useQueryClient();
@@ -105,7 +107,7 @@ function Accounts({ readonly = false }: AccountsProps) {
   }
 
   return (
-    <Card className="w-full">
+    <Card className="w-full h-full">
       <CardHeader>
         <CardTitle>
           <div className="grid grid-cols-2">

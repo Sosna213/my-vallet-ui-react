@@ -30,9 +30,7 @@ function TransactionTable({
   });
 
   return (
-    <div>
       <Datatable<GetTransactionDTO> table={table} paginator={paginator} />
-    </div>
   );
 }
 

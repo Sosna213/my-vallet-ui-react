@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Accounts } from ".";
+import { Accounts, Transactions } from ".";
 import { Checkbox } from "@/components/ui/checkbox";
 
 const Home = () => {
@@ -25,13 +25,13 @@ const Home = () => {
           <div>Elevate Your Finances with My Wallet!</div>
           <div>Unlock financial control in seconds:</div>
           <div>
-            <Checkbox disabled checked /> Secure{" "}
+            <Checkbox disabled checked /> Secure
           </div>
           <div>
-            <Checkbox disabled checked /> Simplified Budgeting{" "}
+            <Checkbox disabled checked /> Simplified Budgeting
           </div>
           <div>
-            <Checkbox disabled checked /> Goal Tracking{" "}
+            <Checkbox disabled checked /> Goal Tracking
           </div>
           <div>
             <Checkbox disabled checked /> Smart Insights
@@ -41,12 +41,15 @@ const Home = () => {
           <Button onClick={handleSignUp}>Sign Up</Button>
         </div>
       </Card>
-    );
+    ); 
   }
   return (
-    <Card className="w-full flex">
+    <Card className="w-full flex flex-wrap">
       <div className="p-5 w-full lg:w-1/2 2xl:w-1/3">
         <Accounts readonly={true} />
+      </div>      
+      <div className="p-5 pt-1 w-full lg:w-1/2 2xl:w-full">
+        <Transactions readonly={true} />
       </div>
     </Card>
   );
