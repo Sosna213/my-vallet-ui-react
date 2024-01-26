@@ -9,18 +9,19 @@ import { Toaster } from "./components/ui/toaster";
 import Transactions from "./pages/Transactions";
 import { IntlProvider } from "react-intl";
 import AuthenticationGuard from "./components/AuthenticationGuard";
+import { Loader2 } from "lucide-react";
 
 const queryClient = new QueryClient();
 
 const App = () => {
   const { isLoading, isAuthenticated, getAccessTokenSilently, user } =
     useAuth0();
-   const lang = navigator.language;
+  const lang = navigator.language;
 
   if (isLoading) {
     return (
-      <div className="page-layout">
-        <span>Loading...</span>
+      <div className="flex items-center justify-center h-screen">
+        <Loader2 className="mr-2 h-32 w-32 animate-spin" />
       </div>
     );
   }
