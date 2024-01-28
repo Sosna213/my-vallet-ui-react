@@ -107,7 +107,7 @@ function Accounts({ readonly = false }: AccountsProps) {
   }
 
   return (
-    <Card className="w-full h-full">
+    <Card className={`w-full ${readonly ? 'min-h-[365px]' : ''}`}>
       <CardHeader>
         <CardTitle>
           <div className="grid grid-cols-2">

@@ -20,9 +20,9 @@ import { CheckIcon, PlusCircledIcon } from "@radix-ui/react-icons";
 import { PopoverClose } from "@radix-ui/react-popover";
 import { useEffect, useState } from "react";
 
-interface FacetValue {
+export interface FacetValue {
   id?: string;
-  count: number;
+  count?: number;
   key: string;
 }
 
@@ -39,7 +39,9 @@ function DataTableFilter({
   facetsValue,
   title,
 }: DataTableFacetedFilterProps): React.ReactElement {
-  const [selectedValues, setSelectedValues] = useState<Set<string>>(new Set(selectedFilterValues));
+  const [selectedValues, setSelectedValues] = useState<Set<string>>(
+    new Set(selectedFilterValues)
+  );
 
   useEffect(() => {
     setSelectedValues(new Set(selectedFilterValues));
@@ -70,7 +72,9 @@ function DataTableFilter({
                   </Badge>
                 ) : (
                   facetsValue
-                    .filter((facet) => selectedValues.has(facet?.id ? facet.id : facet.key))
+                    .filter((facet) =>
+                      selectedValues.has(facet?.id ? facet.id : facet.key)
+                    )
                     .map((facet) => (
                       <Badge
                         variant="secondary"
@@ -93,7 +97,9 @@ function DataTableFilter({
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup>
               {facetsValue.map((facet) => {
-                const isSelected = selectedValues.has(facet?.id ? facet.id : facet.key);
+                const isSelected = selectedValues.has(
+                  facet?.id ? facet.id : facet.key
+                );
                 return (
                   <CommandItem
                     key={facet.key}
@@ -124,9 +130,11 @@ function DataTableFilter({
                       <CheckIcon className={cn("h-4 w-4")} />
                     </div>
                     <span>{facet.key}</span>
-                    <span className="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs">
-                      {facet.count}
-                    </span>
+                    {facet.count && (
+                      <span className="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs">
+                        {facet.count}
+                      </span>
+                    )}
                   </CommandItem>
                 );
               })}

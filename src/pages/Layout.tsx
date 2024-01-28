@@ -4,11 +4,11 @@ import {Topbar, LeftSidebar} from "../components/shared"
 const Layout = () => {
 
     return (
-        <div className="w-full flex flex-wrap">
+        <div className="w-full flex flex-wrap colun">
             <Topbar />
             <LeftSidebar />
 
-            <section className="flex flex-1 h-full">
+            <section className="flex flex-1">
                 <Outlet />
             </section>
         </div>

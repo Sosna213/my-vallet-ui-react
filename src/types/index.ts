@@ -1,3 +1,5 @@
+import { FacetValue } from "@/components/shared/DataTable/DataTableSelectableFilter";
+
 export type INavLink = {
   imgURL: string;
   route: string;
@@ -14,11 +16,34 @@ export type ResultWithPagination<TItem, TFacets> = {
     totalItems: number;
     totalPages: number;
   };
-  facets?: TFacets
+  facets?: TFacets;
 };
 
 export type PaginatorInput = {
- currentPage: number;
- setPage: React.Dispatch<React.SetStateAction<number>>;
- maxPage: number
+  currentPage: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
+  maxPage: number;
+};
+
+export type TransactionsExpensesGroupedByCategoryAndAcounts = {
+  transactionsGroupedByCategory: TransactionGroupedByCategory[];
+  accounts: FacetValue[];
+};
+
+export interface TransactionGroupedByCategory {
+  category: string;
+  amount: number;
+}
+
+export interface TransactionGroupedByMonth {
+  year: string;
+  month: string;
+  amount: number;
+}
+
+
+export type TransactionsExpensesByMonth = {
+  incomingTransactionsGroupedByMonth: TransactionGroupedByMonth[],
+  outgoingTransactionsGroupedByMonth: TransactionGroupedByMonth[],
+  accounts: FacetValue[];
 }
