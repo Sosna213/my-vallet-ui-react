@@ -15,6 +15,7 @@
 * React Redux: A predictable state container for JavaScript apps.
 * Tanstack Query: A library for fetching, caching, and updating asynchronous data in React.
 * Shadcn: A library for creating UI components.
+* Charts.js: A library for charts.
 
 ## Backend Application
 
@@ -29,14 +30,16 @@ The backend for the "My Wallet" application is located in a separate repository.
 * Displaying a list of user accounts.
 * Adding and deleting transactions.
 * Displaying a list of transactions.
-* Financial analysis using charts (planned for the future).
-* Managing transaction categories (planned for the future).
+* Financial analysis using charts.
+* Managing currencies for accounts (planned for the future).
 
 ## Application screenshots
 
-![AppPreview1.png](./public/redme-screenshots/AppPreview1.png)
+![AppPreview1.png](./public/redme-screenshots/Transactions.png)
 
-![AppPreview2.png](./public/redme-screenshots/AppPreview2.png)
+![AppPreview2.png](./public/redme-screenshots/HomeDashboard.png)
+
+![AppPreview2.png](./public/redme-screenshots/CreateTransaction.png)
 
 ## Installation
 
