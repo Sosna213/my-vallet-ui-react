@@ -20,7 +20,7 @@ const App = () => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-screen">
+      <div className="flex items-center justify-center">
         <Loader2 className="mr-2 h-32 w-32 animate-spin" />
       </div>
     );
@@ -51,7 +51,7 @@ const App = () => {
 
   return (
     <ThemeProvider>
-      <main className="flex h-screen">
+      <main className="flex">
         <QueryClientProvider client={queryClient}>
           <IntlProvider locale={lang ?? "en"}>
             <Routes>
