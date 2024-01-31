@@ -1,4 +1,4 @@
-import { TransactionFacets, setAccountFacets, setCategoryFacets, setCurrencyFacets } from "@/services/state/transactions-filters/transactions-facets-slice";
+import { TransactionFacets, setAccountFacets, setCategoryFacets, setCurrencyFacets } from "@/services/state/transactions/transactions-facets-slice";
 import { ResultWithPagination } from "@/types";
 import { Dispatch, UnknownAction } from "@reduxjs/toolkit";
 import { ColumnDef } from "@tanstack/react-table";

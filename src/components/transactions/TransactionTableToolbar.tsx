@@ -11,7 +11,7 @@ import {
   setDateTo,
   setAccountId,
   setCurrency,
-} from "@/services/state/transactions-filters/transactions-filter-slice";
+} from "@/services/state/transactions/transactions-filter-slice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/services/state/store";
 import { Input } from "../ui/input";

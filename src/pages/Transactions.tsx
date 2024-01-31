@@ -8,7 +8,6 @@ import {
 import { fetchTransactions } from "@/services/api-calls/transactions";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
 import Error from "@/components/shared/Error";
 import TransactionTable from "@/components/transactions/TransactionTable";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,6 +17,11 @@ import { TransactionsFilters } from "my-wallet-shared-types/shared-types";
 import { useDebounce } from "usehooks-ts";
 import { setTransactionsFilterFacets } from "@/components/transactions/utils";
 import { Loading } from "@/components/shared";
+import {
+  setCurrentPage,
+  setMaxPage,
+} from "@/services/state/transactions/transactions-paginator-slice";
+import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 
 interface TransactionsProps {
@@ -26,26 +30,28 @@ interface TransactionsProps {
 
 function Transactions({ readonly = false }: TransactionsProps) {
   const [searchParams] = useSearchParams();
+  const initPage = !readonly ? searchParams.get("page") ?? 1 : 1;
 
-  const initPage = !readonly
-    ? searchParams.get("page") ?? 1
-    : 1;
-  const [page, setPage] = useState<number>(Number(initPage));
   const { getAccessTokenSilently } = useAuth0();
   const filters = useSelector((state: RootState) => state.transactionsFilter);
+  const { currentPage } = useSelector(
+    (state: RootState) => state.transactionsPagination
+  );
   const dispatch = useDispatch();
   const debouncedFilters = useDebounce<TransactionsFilters>(filters, 500);
 
   useEffect(() => {
-    console.log("useEffect");
-      setPage(1);
-    
-  }, [debouncedFilters]);
+    dispatch(setCurrentPage(Number(initPage)));
+    return () => {
+      dispatch(setCurrentPage(1));
+    };
+  }, []);
 
   const { data, error, refetch, isLoading } = useQuery({
-    queryKey: ["transactions", { page, ...debouncedFilters }],
+    queryKey: ["transactions", { currentPage, ...debouncedFilters }],
     select: (data) => {
       setTransactionsFilterFacets(data, dispatch);
+      dispatch(setMaxPage(data.meta.totalPages));
       return data;
     },
     staleTime: 1000,
@@ -55,7 +61,7 @@ function Transactions({ readonly = false }: TransactionsProps) {
       return fetchTransactions(
         token,
         debouncedFilters,
-        page,
+        currentPage,
         readonly ? 3 : 10
       );
     },
@@ -78,13 +84,7 @@ function Transactions({ readonly = false }: TransactionsProps) {
         {isLoading ? (
           <Loading />
         ) : (
-          data?.items && (
-            <TransactionTable
-              transactions={data}
-              setPage={setPage}
-              currentPage={page}
-            />
-          )
+          data?.items && <TransactionTable transactions={data} />
         )}
       </CardContent>
     </Card>

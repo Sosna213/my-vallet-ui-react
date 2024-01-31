@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 interface UsePaginationParams {
   maxPage: number;
   currentPage: number;
-  setPage: React.Dispatch<React.SetStateAction<number>>;
+  setPage: (page: number) => void;
 }
 
 export const usePagination = ({

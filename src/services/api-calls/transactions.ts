@@ -10,7 +10,7 @@ import {
   TransactionsChartFilters,
   TransactionsFilters,
 } from "my-wallet-shared-types/shared-types";
-import { TransactionFacets } from "../state/transactions-filters/transactions-facets-slice";
+import { TransactionFacets } from "../state/transactions/transactions-facets-slice";
 
 export const createTransaction = async (
   token: string,
