@@ -13,7 +13,7 @@ import { PlusCircledIcon } from "@radix-ui/react-icons";
 import { PopoverClose } from "@radix-ui/react-popover";
 import { useEffect, useState } from "react";
 
-interface DataTableNumericFilterProps {
+interface NumericFilterProps {
   filterValueEq?: number;
   filterValueFrom?: number;
   filterValueTo?: number;
@@ -25,13 +25,13 @@ interface DataTableNumericFilterProps {
   title?: string;
 }
 
-function DataTableNumericFilter({
+function NumericFilter({
   filterValueEq,
   filterValueFrom,
   filterValueTo,
   setFilterValue,
   title,
-}: DataTableNumericFilterProps): React.ReactElement {
+}: NumericFilterProps): React.ReactElement {
   const [equals, setEquals] = useState<number | undefined>(filterValueEq);
   const [from, setFrom] = useState<number | undefined>(filterValueFrom);
   const [to, setTo] = useState<number | undefined>(filterValueTo);
@@ -198,4 +198,4 @@ function DataTableNumericFilter({
   );
 }
 
-export default DataTableNumericFilter;
+export default NumericFilter;

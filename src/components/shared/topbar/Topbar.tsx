@@ -1,40 +1,10 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { useAuth0 } from "@auth0/auth0-react";
-import { ModeToggle } from ".";
+import { ModeToggle } from "..";
+import { useAuthHandling } from "./useAuthHandling";
 
 const Topbar = (): React.ReactElement => {
-  const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
-  const handleLogin = async () => {
-    await loginWithRedirect({
-      appState: {
-        returnTo: "/",
-      },
-      authorizationParams: {
-        prompt: "login",
-      },
-    });
-  };
-
-  const handleLogout = () => {
-    logout({
-      logoutParams: {
-        returnTo: window.location.origin,
-      },
-    });
-  };
-
-  const handleSignUp = async () => {
-    await loginWithRedirect({
-      appState: {
-        returnTo: "/",
-      },
-      authorizationParams: {
-        prompt: "login",
-        screen_hint: "signup",
-      },
-    });
-  };
+  const { handleLogin, handleLogout, handleSignUp, isAuthenticated } = useAuthHandling();
 
   const buttons = isAuthenticated ? (
     <Button variant={"destructive"} onClick={handleLogout}>

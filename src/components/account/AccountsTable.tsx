@@ -1,7 +1,7 @@
 import { GetAccount } from "my-wallet-shared-types/shared-types";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { PaginatorInput, ResultWithPagination } from "@/types";
-import Datatable from "../shared/DataTable/DataTable";
+import Datatable from "../shared/data-table/DataTable";
 import { getAccountColumns } from "./utils";
 
 interface AccountsTableProps {

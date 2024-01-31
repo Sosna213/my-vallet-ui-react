@@ -1,8 +1,9 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { Accounts, Transactions } from ".";
+import { Transactions } from ".";
 import HomeNonAuthentcatedCard from "@/components/HomeNonAuthentcatedCard";
 import SpendingsGroupedByCategory from "@/components/charts/SpendingsGroupedByCategory";
 import SpendingsGroupedByMonthAndAmount from "@/components/charts/SpendingsGroupedByMonthAndAmount";
+import { Accounts } from "./accounts";
 
 const Home = () => {
   const { isAuthenticated } = useAuth0();

@@ -1,6 +1,6 @@
 import "./globals.css";
 import { Route, Routes } from "react-router-dom";
-import { Accounts, Home, Layout } from "./pages";
+import { Home, Layout } from "./pages";
 import { useAuth0 } from "@auth0/auth0-react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { checkIsRegistered, registerUser } from "./services/api-calls/users";
@@ -10,6 +10,7 @@ import Transactions from "./pages/Transactions";
 import { IntlProvider } from "react-intl";
 import AuthenticationGuard from "./components/AuthenticationGuard";
 import { Loader2 } from "lucide-react";
+import { Accounts } from "./pages/accounts";
 
 const queryClient = new QueryClient();
 

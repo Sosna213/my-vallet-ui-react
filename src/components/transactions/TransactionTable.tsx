@@ -1,6 +1,6 @@
 import { PaginatorInput, ResultWithPagination } from "@/types";
 import { GetTransactionDTO } from "my-wallet-shared-types/shared-types";
-import Datatable from "../shared/DataTable/DataTable";
+import Datatable from "../shared/data-table/DataTable";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { TransactionFacets } from "@/services/state/transactions-filters/transactions-facets-slice";
 import { getTransactionsColumns } from "./utils";

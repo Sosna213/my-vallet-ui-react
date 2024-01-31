@@ -2,48 +2,16 @@ import { fetchTransactionsExpensesGroupedByMonthsAndAmount } from "@/services/ap
 import { useAuth0 } from "@auth0/auth0-react";
 import { useQuery } from "@tanstack/react-query";
 import { TransactionsChartFilters } from "my-wallet-shared-types/shared-types";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Loading, Error, EmptyState } from "../shared";
 import {
   TransactionGroupedByMonth,
   TransactionsExpensesByMonth,
 } from "@/types";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { DataTableSelectableFilter } from "../shared/DataTable";
+import { SelectableFilter } from "../shared/data-table/filters";
 import { Line } from "react-chartjs-2";
 import { _DeepPartialObject } from "node_modules/chart.js/dist/types/utils";
-
-const generateChartData = (data: TransactionsExpensesByMonth) => {
-  return {
-    labels: data.outgoingTransactionsGroupedByMonth.map(
-      (item: TransactionGroupedByMonth) =>
-        new Date(Number(item.year), Number(item.month), 1).toLocaleDateString(
-          "en-US",
-          { month: "short", year: "numeric" }
-        )
-    ),
-    datasets: [
-      {
-        label: "Incoming",
-        data: data.incomingTransactionsGroupedByMonth.map(
-          (item: TransactionGroupedByMonth) => Math.abs(item.amount)
-        ),
-        backgroundColor: ["white"],
-        hoverOffset: 4,
-        borderColor: "white",
-      },
-      {
-        label: "Outgoing",
-        data: data.outgoingTransactionsGroupedByMonth.map(
-          (item: TransactionGroupedByMonth) => Math.abs(item.amount)
-        ),
-        backgroundColor: ["grey"],
-        hoverOffset: 4,
-        borderColor: "grey",
-      },
-    ],
-  };
-};
 
 function SpendingsGroupedByMonthAndAmount() {
   const { getAccessTokenSilently } = useAuth0();
@@ -98,7 +66,7 @@ function SpendingsGroupedByMonthAndAmount() {
         <CardTitle>
           <div>Tranactions grouped by month</div>
           <div className="mt-3">
-            <DataTableSelectableFilter
+            <SelectableFilter
               facetsValue={data.accounts}
               setFilterValue={(filters: string[]) => {
                 setAccountFilter(filters);
@@ -117,3 +85,35 @@ function SpendingsGroupedByMonthAndAmount() {
 }
 
 export default SpendingsGroupedByMonthAndAmount;
+
+const generateChartData = (data: TransactionsExpensesByMonth) => {
+  return {
+    labels: data.outgoingTransactionsGroupedByMonth.map(
+      (item: TransactionGroupedByMonth) =>
+        new Date(Number(item.year), Number(item.month), 1).toLocaleDateString(
+          "en-US",
+          { month: "short", year: "numeric" }
+        )
+    ),
+    datasets: [
+      {
+        label: "Incoming",
+        data: data.incomingTransactionsGroupedByMonth.map(
+          (item: TransactionGroupedByMonth) => Math.abs(item.amount)
+        ),
+        backgroundColor: ["white"],
+        hoverOffset: 4,
+        borderColor: "white",
+      },
+      {
+        label: "Outgoing",
+        data: data.outgoingTransactionsGroupedByMonth.map(
+          (item: TransactionGroupedByMonth) => Math.abs(item.amount)
+        ),
+        backgroundColor: ["grey"],
+        hoverOffset: 4,
+        borderColor: "grey",
+      },
+    ],
+  };
+};
