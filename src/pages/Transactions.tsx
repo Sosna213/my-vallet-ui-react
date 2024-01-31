@@ -10,13 +10,13 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import Error from "@/components/shared/Error";
-import TransactionTable from "@/components/transaction/TransactionTable";
+import TransactionTable from "@/components/transactions/TransactionTable";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/services/state/store";
-import TransactionTableToolbar from "@/components/transaction/TransactionTableToolbar";
+import TransactionTableToolbar from "@/components/transactions/TransactionTableToolbar";
 import { TransactionsFilters } from "my-wallet-shared-types/shared-types";
 import { useDebounce } from "usehooks-ts";
-import { setTransactionsFilterFacets } from "@/components/transaction/utils";
+import { setTransactionsFilterFacets } from "@/components/transactions/utils";
 import { Loading } from "@/components/shared";
 import { useSearchParams } from "react-router-dom";
 
@@ -37,7 +37,9 @@ function Transactions({ readonly = false }: TransactionsProps) {
   const debouncedFilters = useDebounce<TransactionsFilters>(filters, 500);
 
   useEffect(() => {
-    setPage(1);
+    console.log("useEffect");
+      setPage(1);
+    
   }, [debouncedFilters]);
 
   const { data, error, refetch, isLoading } = useQuery({
@@ -46,6 +48,7 @@ function Transactions({ readonly = false }: TransactionsProps) {
       setTransactionsFilterFacets(data, dispatch);
       return data;
     },
+    staleTime: 1000,
     queryFn: async () => {
       const token = await getAccessTokenSilently();
 

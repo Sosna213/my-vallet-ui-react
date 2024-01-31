@@ -15,42 +15,52 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/services/state/store";
 import { Input } from "../ui/input";
-import { DataTableDateFilter, DataTableNumericFilter, DataTableSelectableFilter } from "../shared/DataTable";
-
+import {
+  DateFilter,
+  NumericFilter,
+  SelectableFilter,
+} from "../shared/data-table/filters";
+import { useEffect, useState } from "react";
+import useDebounce from "@/hooks/useDebounce";
 
 function TransactionTableToolbar(): React.ReactElement {
   const dispatch = useDispatch();
   const filters = useSelector((state: RootState) => state.transactionsFilter);
+  const [search, setSearch] = useState<string>(filters.transactionName ?? "");
   const facets = useSelector((state: RootState) => state.transactionsFacets);
+  const { account = [], currency = [], category =[] } = facets;
+
+  const debouncedSearch = useDebounce(search, 500);
+
+  useEffect(() => {
+    dispatch(setTransactionName(debouncedSearch));
+  }, [debouncedSearch]);
 
   return (
     <div className="flex items-center justify-between mb-4">
       <div className="flex flex-1 items-center space-x-2">
         <Input
           placeholder="Filter data..."
-          value={filters.transactionName ?? ""}
-          onChange={(event) =>
-            dispatch(setTransactionName(event.currentTarget.value))
-          }
+          onChange={(e) => setSearch(e.target.value)}
           className="h-8 w-[150px] lg:w-[250px]"
         />
-        <DataTableSelectableFilter
-          facetsValue={facets.account ? facets.account : []}
+        <SelectableFilter
+          facetsValue={account}
           setFilterValue={(filters: string[]) => {
             dispatch(setAccountId(filters));
           }}
           selectedFilterValues={filters.accountId}
           title="Account"
         />
-        <DataTableSelectableFilter
-          facetsValue={facets.category ? facets.category : []}
+        <SelectableFilter
+          facetsValue={category}
           setFilterValue={(filters: string[]) => {
             dispatch(setCategory(filters));
           }}
           selectedFilterValues={filters.category}
           title="Category"
         />
-        <DataTableNumericFilter
+        <NumericFilter
           title="Amount"
           setFilterValue={(
             eq: number | undefined,
@@ -65,7 +75,7 @@ function TransactionTableToolbar(): React.ReactElement {
           filterValueFrom={filters.gte}
           filterValueTo={filters.lte}
         />
-        <DataTableDateFilter
+        <DateFilter
           title="Date"
           filterPeriodFrom={
             filters.fromDate ? new Date(filters.fromDate) : undefined
@@ -80,8 +90,8 @@ function TransactionTableToolbar(): React.ReactElement {
             }
           }}
         />
-        <DataTableSelectableFilter
-          facetsValue={facets.currency ? facets.currency : []}
+        <SelectableFilter
+          facetsValue={currency}
           setFilterValue={(filters: string[]) => {
             dispatch(setCurrency(filters));
           }}

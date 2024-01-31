@@ -8,9 +8,6 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { Button } from "../ui/button";
-import * as zod from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
@@ -27,7 +24,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { useToast } from "../ui/use-toast";
 import { CreateTransactionDTO } from "my-wallet-shared-types/shared-types";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
@@ -36,19 +32,7 @@ import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "../ui/calendar";
 import { TransactionsCategories } from "@/utils/enums";
-
-const formSchema = zod.object({
-  name: zod
-    .string()
-    .min(2, {
-      message: "Transaction name must be at least 2 characters.",
-    })
-    .max(50),
-  type: zod.enum(["outgoing", "incoming"]),
-  amount: zod.coerce.number().gte(0),
-  category: zod.nativeEnum(TransactionsCategories),
-  date: zod.date().max(new Date()),
-});
+import { useCreateTransactionDialog } from "./useCreateTransactionDialog";
 
 interface CreateTransactionDialogProps {
   accountId: string;
@@ -61,40 +45,11 @@ function CreateTransactionDialog({
   accountId,
   addTransaction,
 }: CreateTransactionDialogProps): React.ReactElement {
-  const { toast } = useToast();
-  const today = new Date();
-  today.setUTCHours(0,0,0,0);
-  const form = useForm<zod.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      type: "outgoing",
-      amount: 0,
-      category: TransactionsCategories.OTHERS,
-      date: today,
-    },
+  const { form, onSubmit } = useCreateTransactionDialog({
+    accountId,
+    addTransaction,
   });
 
-  async function onSubmit(values: zod.infer<typeof formSchema>) {
-    try {
-      const input: CreateTransactionDTO = {
-        name: values.name,
-        amount: values.type === "outgoing" ? -values.amount : values.amount,
-        accountId: accountId,
-        category: values.category,
-        date: values.date,
-      };
-      await addTransaction(input);
-
-      toast({
-        title: "Success",
-        description: "Transaction added succesfuly.",
-      });
-      form.reset();
-    } catch (e) {
-      console.error(e);
-    }
-  }
   return (
     <Dialog>
       <DialogTrigger asChild>

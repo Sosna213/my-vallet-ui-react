@@ -4,7 +4,7 @@ import DeleteAccountDialog from "@/components/account/DeleteAccountDialog";
 import EmptyState from "@/components/shared/EmptyState";
 import Error from "@/components/shared/Error";
 import Loading from "@/components/shared/Loading";
-import CreateTransactionDialog from "@/components/transaction/CreateTransactionDialog";
+import CreateTransactionDialog from "@/components/transactions/CreateTransactionDialog";
 import {
   Card,
   CardContent,
@@ -12,16 +12,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { fetchAccounts, createAccount } from "@/services/api-calls/accounts";
-import { createTransaction } from "@/services/api-calls/transactions";
-import { useAuth0 } from "@auth0/auth0-react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  CreateAccount,
-  CreateTransactionDTO,
-} from "my-wallet-shared-types/shared-types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import useAccountsQueryAndMutations from "./useAccountsQueryAndMutations";
 
 interface AccountsProps {
   readonly?: boolean;
@@ -29,53 +22,13 @@ interface AccountsProps {
 
 function Accounts({ readonly = false }: AccountsProps) {
   const [searchParams] = useSearchParams();
-  const initPage = !readonly ? searchParams.get("page") ?? 1 : 1;
+  const initPage = !readonly ? searchParams.get("page") ?? 1 : 1;  
 
-
-  const [page, setPage] = useState<number>(
-    Number(Number(initPage))
-  );
-  const { getAccessTokenSilently } = useAuth0();
-  const queryClient = useQueryClient();
-
-  const {
-    data: accounts,
-    error,
-    isLoading,
-    refetch,
-  } = useQuery({
-    queryKey: ["accounts", { page }],
-    queryFn: async () => {
-      const token = await getAccessTokenSilently();
-
-      return fetchAccounts(token, page, readonly ? 3 : 10);
-    },
-  });
-
-  const { mutateAsync: addAcount } = useMutation({
-    mutationFn: async (accountToCreate: CreateAccount) => {
-      const token = await getAccessTokenSilently();
-
-      return createAccount(token, accountToCreate);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["accounts"] });
-    },
-  });
+  const [page, setPage] = useState<number>(Number(Number(initPage)));
+  const { accounts, error, isLoading, refetch, addAcount, addTransaction } =
+    useAccountsQueryAndMutations({ readonly, page });
 
   const addAccoutnButton = <CreateAccountDialog addAccount={addAcount} />;
-
-  const { mutateAsync: addTransaction } = useMutation({
-    mutationFn: async (transactionToCreate: CreateTransactionDTO) => {
-      const token = await getAccessTokenSilently();
-
-      return createTransaction(token, transactionToCreate);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["transactions"] });
-      queryClient.invalidateQueries({ queryKey: ["accounts"] });
-    },
-  });
 
   const deleteButton = (accountId: string) => {
     return <DeleteAccountDialog accountId={accountId} />;
@@ -89,6 +42,10 @@ function Accounts({ readonly = false }: AccountsProps) {
       />
     );
   };
+
+  useEffect(() => {
+    console.log('1.Accounts did mount')
+  });
 
   if (isLoading) {
     return <Loading />;
@@ -107,7 +64,7 @@ function Accounts({ readonly = false }: AccountsProps) {
   }
 
   return (
-    <Card className={`w-full ${readonly ? 'min-h-[365px]' : ''}`}>
+    <Card className={`w-full ${readonly ? "min-h-[365px]" : ""}`}>
       <CardHeader>
         <CardTitle>
           <div className="grid grid-cols-2">

@@ -26,19 +26,19 @@ export interface FacetValue {
   key: string;
 }
 
-interface DataTableFacetedFilterProps {
+interface FacetedFilterProps {
   selectedFilterValues?: string[];
   setFilterValue: (filters: string[]) => void;
   title?: string;
   facetsValue: FacetValue[];
 }
 
-function DataTableFilter({
+function SelectableFilter({
   selectedFilterValues,
   setFilterValue,
   facetsValue,
   title,
-}: DataTableFacetedFilterProps): React.ReactElement {
+}: FacetedFilterProps): React.ReactElement {
   const [selectedValues, setSelectedValues] = useState<Set<string>>(
     new Set(selectedFilterValues)
   );
@@ -170,4 +170,4 @@ function DataTableFilter({
   );
 }
 
-export default DataTableFilter;
+export default SelectableFilter;

@@ -7,10 +7,9 @@ import {
   TableRow,
 } from "../../ui/table";
 import { Table as TableType, flexRender } from "@tanstack/react-table";
-
 import { PaginatorInput } from "@/types";
-import Paginator from "./Paginator";
 import React from "react";
+import { Paginator } from "./paginator";
 
 interface DatatableProps<T> {
   table: TableType<T>;
@@ -19,9 +18,8 @@ interface DatatableProps<T> {
 
 export default function Datatable<T>({
   table,
-  paginator
+  paginator,
 }: DatatableProps<T>): React.ReactElement {
-
   return (
     <div className="space-y-4">
       <div className="rounded-md border">

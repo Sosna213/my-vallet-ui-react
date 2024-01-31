@@ -1,4 +1,4 @@
-import { FacetValue } from "@/components/shared/DataTable/DataTableSelectableFilter";
+import { FacetValue } from "@/components/shared/data-table/filters/SelectableFilter";
 
 export type INavLink = {
   imgURL: string;

@@ -12,19 +12,19 @@ import { useEffect, useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import { DateRange } from "react-day-picker";
 
-interface DataTableDateFilterProps {
+interface DateFilterProps {
   filterPeriodFrom?: Date;
   filterPeriodTo?: Date;
   setPeriodValues: (from: Date | undefined, to: Date | undefined) => void;
   title?: string;
 }
 
-function DataTableDateFilter({
+function DateFilter({
   filterPeriodFrom,
   filterPeriodTo,
   setPeriodValues,
   title,
-}: DataTableDateFilterProps): React.ReactElement {
+}: DateFilterProps): React.ReactElement {
   const [date, setDate] = useState<DateRange | undefined>({
     from: filterPeriodFrom,
     to: filterPeriodTo,
@@ -111,4 +111,4 @@ function DataTableDateFilter({
   );
 }
 
-export default DataTableDateFilter;
+export default DateFilter;

@@ -6,32 +6,12 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Error, EmptyState, Loading } from "../shared";
 import { TransactionsChartFilters } from "my-wallet-shared-types/shared-types";
-import { DataTableSelectableFilter } from "../shared/DataTable";
+import { SelectableFilter } from "../shared/data-table/filters";
 import { useState } from "react";
 import {
   TransactionGroupedByCategory,
   TransactionsExpensesGroupedByCategoryAndAcounts,
 } from "@/types";
-
-const generateChartData = (
-  data: TransactionsExpensesGroupedByCategoryAndAcounts
-) => {
-  return {
-    labels: data.transactionsGroupedByCategory.map(
-      (item: TransactionGroupedByCategory) => item.category
-    ),
-    datasets: [
-      {
-        label: "Spendings",
-        data: data.transactionsGroupedByCategory.map(
-          (item: TransactionGroupedByCategory) => Math.abs(item.amount)
-        ),
-        backgroundColor: ["white"],
-        hoverOffset: 4,
-      },
-    ],
-  };
-};
 
 const SpendingsGroupedByCategory = () => {
   const { getAccessTokenSilently } = useAuth0();
@@ -80,7 +60,7 @@ const SpendingsGroupedByCategory = () => {
         <CardTitle>
           <div>This month's expenses grouped by category</div>
           <div className="mt-3">
-            <DataTableSelectableFilter
+            <SelectableFilter
               facetsValue={data.accounts}
               setFilterValue={(filters: string[]) => {
                 setAccountFilter(filters);
@@ -99,3 +79,24 @@ const SpendingsGroupedByCategory = () => {
 };
 
 export default SpendingsGroupedByCategory;
+
+
+const generateChartData = (
+  data: TransactionsExpensesGroupedByCategoryAndAcounts
+) => {
+  return {
+    labels: data.transactionsGroupedByCategory.map(
+      (item: TransactionGroupedByCategory) => item.category
+    ),
+    datasets: [
+      {
+        label: "Spendings",
+        data: data.transactionsGroupedByCategory.map(
+          (item: TransactionGroupedByCategory) => Math.abs(item.amount)
+        ),
+        backgroundColor: ["white"],
+        hoverOffset: 4,
+      },
+    ],
+  };
+};
