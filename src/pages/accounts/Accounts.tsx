@@ -12,22 +12,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
 import useAccountsQueryAndMutations from "./useAccountsQueryAndMutations";
 
 interface AccountsProps {
   readonly?: boolean;
 }
-
 function Accounts({ readonly = false }: AccountsProps) {
-  const [searchParams] = useSearchParams();
-  const initPage = !readonly ? searchParams.get("page") ?? 1 : 1;  
 
-  const [page, setPage] = useState<number>(Number(Number(initPage)));
+
   const { accounts, error, isLoading, refetch, addAcount, addTransaction } =
-    useAccountsQueryAndMutations({ readonly, page });
-
+    useAccountsQueryAndMutations({ readonly });
   const addAccoutnButton = <CreateAccountDialog addAccount={addAcount} />;
 
   const deleteButton = (accountId: string) => {
@@ -42,10 +36,6 @@ function Accounts({ readonly = false }: AccountsProps) {
       />
     );
   };
-
-  useEffect(() => {
-    console.log('1.Accounts did mount')
-  });
 
   if (isLoading) {
     return <Loading />;
@@ -80,8 +70,6 @@ function Accounts({ readonly = false }: AccountsProps) {
             accounts={accounts}
             deleteButton={!readonly ? deleteButton : undefined}
             addTransaction={!readonly ? addTransactionButton : undefined}
-            setPage={setPage}
-            currentPage={page}
           />
         )}
       </CardContent>

@@ -21,7 +21,7 @@ export type ResultWithPagination<TItem, TFacets> = {
 
 export type PaginatorInput = {
   currentPage: number;
-  setPage: React.Dispatch<React.SetStateAction<number>>;
+  setPage: (page: number) => void;
   maxPage: number;
 };
 
