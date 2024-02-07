@@ -43,6 +43,7 @@ function SpendingsGroupedByMonthAndAmount() {
   }
 
   const chartData = generateChartData(data);
+  
   const position:
     | "bottom"
     | "left"
@@ -90,7 +91,7 @@ const generateChartData = (data: TransactionsExpensesByMonth) => {
   return {
     labels: data.outgoingTransactionsGroupedByMonth.map(
       (item: TransactionGroupedByMonth) =>
-        new Date(Number(item.year), Number(item.month), 1).toLocaleDateString(
+        new Date(Number(item.year), Number(item.month)-1, 1).toLocaleDateString(
           "en-US",
           { month: "short", year: "numeric" }
         )

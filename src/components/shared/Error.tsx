@@ -10,7 +10,7 @@ interface ErrorProps {
 
 const Error = ({ refetch }: ErrorProps): React.ReactElement => {
   return (
-    <Card className="flex w-full justify-center items-center flex-col flex-wrap">
+    <Card className="flex w-full justify-center items-center flex-col flex-wrap p-8">
       <img
         src={"/assets/icons/error.svg"}
         alt={"empty"}
