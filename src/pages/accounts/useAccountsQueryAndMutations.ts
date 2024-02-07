@@ -26,6 +26,9 @@ export default function useAccountsQueryAndMutations({ readonly }: HookProps) {
   const { currentPage } = useSelector(
     (state: RootState) => state.accountsPagination
   );
+
+  const queryClient = useQueryClient();
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(setCurrentPage(Number(initPage)));
@@ -33,7 +36,8 @@ export default function useAccountsQueryAndMutations({ readonly }: HookProps) {
       dispatch(setCurrentPage(1));
     };
   }, []);
-  const queryClient = useQueryClient();
+
+ 
 
   const {
     data: accounts,
@@ -42,16 +46,18 @@ export default function useAccountsQueryAndMutations({ readonly }: HookProps) {
     refetch,
   } = useQuery({
     queryKey: ["accounts", { currentPage }],
-    select: (data) => {
-      dispatch(setMaxPage(data.meta.totalPages));
-      return data;
-    },
     queryFn: async () => {
       const token = await getAccessTokenSilently();
 
       return fetchAccounts(token, currentPage, readonly ? 3 : 10);
     },
   });
+
+  useEffect(() => {
+    if (accounts) {
+      dispatch(setMaxPage(accounts.meta.totalPages));
+    }
+  }, [accounts]);
 
   const { mutateAsync: addAcount } = useMutation({
     mutationFn: async (accountToCreate: CreateAccount) => {

@@ -18,8 +18,6 @@ interface AccountsProps {
   readonly?: boolean;
 }
 function Accounts({ readonly = false }: AccountsProps) {
-
-
   const { accounts, error, isLoading, refetch, addAcount, addTransaction } =
     useAccountsQueryAndMutations({ readonly });
   const addAccoutnButton = <CreateAccountDialog addAccount={addAcount} />;
