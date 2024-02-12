@@ -40,8 +40,9 @@ const SpendingsGroupedByCategory = () => {
     console.error(error.message);
     return <Error refetch={refetch} />;
   }
-  if (!data?.transactionsGroupedByCategory) {
-    return <EmptyState message="There is no enought data about transactios" />;
+  
+  if (!data?.transactionsGroupedByCategory || data.transactionsGroupedByCategory.length === 0) {
+    return <EmptyState title="This month's expenses grouped by category" small={true} message="There is no enought data about transactios"/>;
   }
 
   const chartData = generateChartData(data);
@@ -94,7 +95,7 @@ const generateChartData = (
         data: data.transactionsGroupedByCategory.map(
           (item: TransactionGroupedByCategory) => Math.abs(item.amount)
         ),
-        backgroundColor: ["white"],
+        backgroundColor: ["gainsboro"],
         hoverOffset: 4,
       },
     ],

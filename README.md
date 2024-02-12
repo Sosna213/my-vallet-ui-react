@@ -17,6 +17,8 @@
 * Shadcn: A library for creating UI components.
 * Charts.js: A library for charts.
 
+## Demo: https://my-wallet-alpha.d3j42aqo2b5x1h.amplifyapp.com/
+
 ## Backend Application
 
 The backend for the "My Wallet" application is located in a separate repository. It is written in Node.js using the NestJs framework. You can access it at the following URL:

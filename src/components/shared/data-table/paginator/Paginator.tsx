@@ -47,7 +47,7 @@ export default function Paginator({
             </Button>
           </PaginationItem>
         )}
-        {!pages.includes(2) && (
+        {!pages.includes(2) && maxPage > 1 && (
           <PaginationItem>
             <PaginationEllipsis />
           </PaginationItem>
@@ -66,7 +66,7 @@ export default function Paginator({
             </PaginationItem>
           );
         })}
-        {!pages.includes(maxPage - 1) && (
+        {!pages.includes(maxPage - 1) && maxPage > 1 && (
           <PaginationItem>
             <PaginationEllipsis />
           </PaginationItem>
