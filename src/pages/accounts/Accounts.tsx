@@ -44,8 +44,9 @@ function Accounts({ readonly = false }: AccountsProps) {
   if (accounts && accounts.items.length === 0) {
     return (
       <EmptyState
+        title="Accounts"
         message="There is no accaount created"
-        button={!readonly ? addAccoutnButton : undefined}
+        button={addAccoutnButton}
         small={readonly}
       />
     );

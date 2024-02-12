@@ -14,17 +14,17 @@ const Home = () => {
     ); 
   }
   return (
-    <div className="w-full flex flex-wrap mr-4">
-      <div className="p-3 w-full lg:w-1/2 2xl:w-1/3">
+    <div className="w-full flex flex-wrap ">
+      <div className="pr-3 pb-3 w-full lg:w-1/2 2xl:w-1/3">
         <Accounts readonly={true} />
       </div>        
-      <div className="p-3 w-full lg:w-1/2 2xl:w-1/3">
+      <div className="pr-3 pb-3 w-full lg:w-1/2 2xl:w-1/3">
         <SpendingsGroupedByCategory  />
       </div>      
-      <div className="p-3 w-full lg:w-1/2 2xl:w-1/3">
+      <div className="pr-3 pb-3 w-full lg:w-1/2 2xl:w-1/3">
         <SpendingsGroupedByMonthAndAmount  />
       </div>      
-      <div className="p-3 w-full lg:w-1/2 2xl:w-full">
+      <div className="pr-3 pb-3 w-full lg:w-1/2 2xl:w-full">
         <Transactions readonly={true} />
       </div>
     </div>

@@ -34,12 +34,14 @@ function SpendingsGroupedByMonthAndAmount() {
   if (error) {
     console.error(error.message);
     return <Error refetch={refetch} />;
-  }
+  }  
   if (
-    !data?.incomingTransactionsGroupedByMonth &&
-    !data?.outgoingTransactionsGroupedByMonth
+    (!data?.incomingTransactionsGroupedByMonth &&
+    !data?.outgoingTransactionsGroupedByMonth) ||
+     (data.incomingTransactionsGroupedByMonth.length === 0 &&
+    data.outgoingTransactionsGroupedByMonth.length === 0)
   ) {
-    return <EmptyState message="There is no enought data about transactios" />;
+    return <EmptyState title="Tranactions grouped by month" small={true} message="There is no enought data about transactios" />;
   }
 
   const chartData = generateChartData(data);
@@ -102,9 +104,9 @@ const generateChartData = (data: TransactionsExpensesByMonth) => {
         data: data.incomingTransactionsGroupedByMonth.map(
           (item: TransactionGroupedByMonth) => Math.abs(item.amount)
         ),
-        backgroundColor: ["white"],
+        backgroundColor: ["gainsboro"],
         hoverOffset: 4,
-        borderColor: "white",
+        borderColor: "gainsboro",
       },
       {
         label: "Outgoing",
