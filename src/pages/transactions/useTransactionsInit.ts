@@ -1,8 +1,7 @@
 import { setTransactionsFilterFacets } from "@/components/transactions/utils";
 import { fetchTransactions } from "@/services/api-calls/transactions";
-import { setMaxPage } from "@/services/state/accounts/accounts-paginator-slice";
 import { RootState } from "@/services/state/store";
-import { setCurrentPage } from "@/services/state/transactions/transactions-paginator-slice";
+import { setCurrentPage, setMaxPage } from "@/services/state/transactions/transactions-paginator-slice";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useQuery } from "@tanstack/react-query";
 import { TransactionsFilters } from "my-wallet-shared-types/shared-types";

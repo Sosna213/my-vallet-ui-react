@@ -38,7 +38,7 @@ function TransactionTableToolbar(): React.ReactElement {
 
   return (
     <div className="flex items-center justify-between mb-4">
-      <div className="flex flex-1 items-center space-x-2">
+      <div className="flex flex-1 items-center space-x-2 overflow-x-auto pb-1">
         <Input
           placeholder="Filter data..."
           onChange={(e) => setSearch(e.target.value)}
