@@ -13,11 +13,15 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import useAccountsQueryAndMutations from "./useAccountsQueryAndMutations";
+import { Button } from "@/components/ui/button";
+import { useAuth0 } from "@auth0/auth0-react";
+import { createTransactions } from "@/services/api-calls/transactions";
 
 interface AccountsProps {
   readonly?: boolean;
 }
 function Accounts({ readonly = false }: AccountsProps) {
+  const { getAccessTokenSilently } = useAuth0();
   const { accounts, error, isLoading, refetch, addAcount, addTransaction } =
     useAccountsQueryAndMutations({ readonly });
   const addAccoutnButton = <CreateAccountDialog addAccount={addAcount} />;
@@ -54,6 +58,10 @@ function Accounts({ readonly = false }: AccountsProps) {
 
   return (
     <Card className={`w-full ${readonly ? "min-h-[365px]" : ""}`}>
+            <Button onClick={async () => {
+        const token = await getAccessTokenSilently();
+        createTransactions(token)
+      }}>Test</Button>
       <CardHeader>
         <CardTitle>
           <div className="grid grid-cols-2">
