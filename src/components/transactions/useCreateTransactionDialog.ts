@@ -45,13 +45,15 @@ export function useCreateTransactionDialog({
 
   async function onSubmit(values: zod.infer<typeof formSchema>) {
     try {
+      const timezoneOffset = (new Date()).getTimezoneOffset();
       const input: CreateTransactionDTO = {
         name: values.name,
         amount: values.type === "outgoing" ? -values.amount : values.amount,
         accountId: accountId,
         category: values.category,
-        date: values.date,
+        date: new Date(values.date.getTime() - timezoneOffset * 1000 * 60),
       };
+            
       await addTransaction(input);
 
       toast({
