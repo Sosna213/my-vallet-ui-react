@@ -18,7 +18,7 @@
 * Charts.js: A library for charts.
 
 ## Demo: https://my-wallet-alpha.d3j42aqo2b5x1h.amplifyapp.com/
-# Test account: test@test.test.com/Qwerty1@
+### Test account: test@test.test.com/Qwerty1@
 
 ## Backend Application
 
