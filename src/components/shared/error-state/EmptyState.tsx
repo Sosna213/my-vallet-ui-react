@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
 
 interface EmptyStateProps {
   title: string;
@@ -19,7 +19,7 @@ const EmptyState = ({
       <CardHeader>
         <CardTitle>
           <div className="grid grid-cols-2">
-            <div>{title}</div>
+            <div data-testid="empty-title-message-container">{title}</div>
           </div>
         </CardTitle>
       </CardHeader>
@@ -30,7 +30,7 @@ const EmptyState = ({
           width={small ? 184 : 248}
           className="dark:invert"
         />
-        <div className="pb-4 font-bold text-3xl text-center">{message}</div>
+        <div data-testid="empty-state-message-container" className="pb-4 font-bold text-3xl text-center">{message}</div>
         {button}
       </CardContent>
     </Card>
