@@ -16,8 +16,10 @@
 * Tanstack Query: A library for fetching, caching, and updating asynchronous data in React.
 * Shadcn: A library for creating UI components.
 * Charts.js: A library for charts.
+* AWS: application is hosted using EC2, Amplyfy and RDS
 
 ## Demo: https://my-wallet-alpha.d3j42aqo2b5x1h.amplifyapp.com/
+### Test account: test@test.test.com/Qwerty1@
 
 ## Backend Application
 

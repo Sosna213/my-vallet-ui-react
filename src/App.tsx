@@ -21,7 +21,7 @@ const App = () => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center">
+      <div className="flex items-center justify-center h-screen">
         <Loader2 className="mr-2 h-32 w-32 animate-spin" />
       </div>
     );
