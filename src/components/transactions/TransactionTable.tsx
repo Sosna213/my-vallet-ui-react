@@ -24,7 +24,7 @@ function TransactionTable({
   const paginator: PaginatorInput = {
     setPage: setPage,
     currentPage: currentPage,
-    maxPage: maxPage,
+    maxPage: maxPage || 1,
   };
 
   const columns = getTransactionsColumns();
