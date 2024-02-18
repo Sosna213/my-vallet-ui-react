@@ -20,12 +20,13 @@ export default function Paginator({
     pages,
     handleButtonClick,
   } = usePagination({ currentPage, maxPage, setPage });
-
+  
   return (
     <Pagination className="mt-4 mb-4">
       <PaginationContent>
         <PaginationItem>
           <Button
+            data-testid="paginator-previous-button" 
             variant={"ghost"}
             disabled={currentPage - 1 <= 0}
             onClick={() => {
@@ -38,6 +39,7 @@ export default function Paginator({
         {!pages.includes(1) && (
           <PaginationItem>
             <Button
+              data-testid="paginator-min-page-button" 
               variant={1 === currentPage ? "default" : "ghost"}
               onClick={() => {
                 handleButtonClick(1);
@@ -56,6 +58,7 @@ export default function Paginator({
           return (
             <PaginationItem key={val}>
               <Button
+              data-testid="paginator-page-buttons" 
                 variant={val === currentPage ? "default" : "ghost"}
                 onClick={() => {
                   handleButtonClick(val);
@@ -74,6 +77,7 @@ export default function Paginator({
         {!pages.includes(maxPage) && (
           <PaginationItem>
             <Button
+              data-testid="paginator-max-page-button"
               variant={maxPage === currentPage ? "default" : "ghost"}
               onClick={() => {
                 handleButtonClick(maxPage);
@@ -86,6 +90,7 @@ export default function Paginator({
         <PaginationItem>
           <Button
             variant={"ghost"}
+            data-testid="paginator-next-button" 
             disabled={currentPage + 1 > maxPage}
             onClick={() => {
               handleButtonClick(Number(currentPage + 1));
